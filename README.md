@@ -8,7 +8,7 @@ This is the official **upstream** repository for the CS353 project. It is the si
 Extra information, tutorials and documentation can be found here.
 
 - Learn more about the Git Forking Workflow [here](https://www.atlassian.com/git/tutorials/comparing-workflows/forking-workflow)
-- Learm more about forking and cloning an upstream repository [here](https://guides.github.com/activities/forking/)
+- Learn more about forking and cloning an upstream repository [here](https://guides.github.com/activities/forking/)
 
 # Access
 
