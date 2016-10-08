@@ -1,12 +1,18 @@
-<script src="https://www.gstatic.com/firebasejs/3.4.1/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
+// Initialize Firebase
+var config = {
     apiKey: "AIzaSyBe8TpLgjQ6rDJoSoYkrtwOvJ8yGUe_ZOA",
     authDomain: "cs353-project.firebaseapp.com",
     databaseURL: "https://cs353-project.firebaseio.com",
     storageBucket: "",
     messagingSenderId: "480455815960"
-  };
-  firebase.initializeApp(config);
-</script>
+};
+firebase.initializeApp(config);
+
+var database = firebase.database();
+
+function saveAnalogData(value) {
+	firebase.database().ref('data/').push({
+		data: value
+	});
+}
+

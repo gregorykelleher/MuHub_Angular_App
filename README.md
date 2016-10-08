@@ -63,6 +63,8 @@ cs353_project@1.0.0 /Users/admin/Documents/CS353_project
 ├── angular-animate@1.5.8
 ├── angular-aria@1.5.8
 ├── angular-material@1.1.1
+├── angular-messages@1.5.8
+├── angular-router@0.0.2
 ├── angularfire@2.0.2
 └── firebase@3.4.1
 ```
@@ -71,12 +73,14 @@ Likewise, the dependencies are listed inside the **package.json** file:
 
 ```
 "dependencies": {
-  "angular": "^1.5.8",
-  "angular-animate": "^1.5.8",
-  "angular-aria": "^1.5.8",
-  "angular-material": "^1.1.1",
-  "angularfire": "^2.0.2",
-  "firebase": "^3.4.1"
+	"angular": "^1.5.8",
+	"angular-animate": "^1.5.8",
+	"angular-aria": "^1.5.8",
+	"angular-material": "^1.1.1",
+	"angular-messages": "^1.5.8",
+	"angular-router": "0.0.2",
+	"angularfire": "^2.0.2",
+	"firebase": "^3.4.1"
 }
 ```
 
@@ -87,11 +91,6 @@ The template is structured _by type_ as an Angular JS application. The initial t
 ```
 CS353_project/
 ├── logs/                        : log files
-├── node_modules/                : dependencies installed via NPM 
-│   ├── angular-animate/         : animation hooks
-|   ├── angular-material/        : angular material theming & styling
-|   ├── angularfire/             : angular bindings for firebase
-│   └── firebase/                : firebase backend service
 ├── public/                      : Common project folder
 |   ├── app/                     : directory for angular web application
 |   |   ├── controllers/         : angular controller directory
@@ -99,6 +98,14 @@ CS353_project/
 |   |   ├── js/                  : JavaScript directory
 |   |   ├── services/            : angular services directory
 |   |   └── app.js               : application JavaScript file
+|	├── node_modules/                : dependencies installed via NPM 
+|	│   ├── angular-animate/         : animation hooks
+|	│   ├── angular-aria/            : accessibility 
+|	│   ├── angular-messages/        : messages 
+|	│   ├── angular-router/          : routing 
+|	|   ├── angular-material/        : angular material theming & styling
+|	|   ├── angularfire/             : angular bindings for firebase
+|	│   └── firebase/                : firebase backend service
 │   └── index.html               : main html page
 ├── .firebaserc                  : named alias definition for firebase CLI
 ├── .gitignore                   : git ignore file
@@ -109,3 +116,11 @@ CS353_project/
 ```
 
 Note that the **node_modules** directory is referenced in the .gitignore and hence is not pushed to the upstream repository. Instead NPM will generate this directory locally based on the **package.json** file. 
+
+# Firebase
+
+Firebase has been initialised in the project directory based on the **firebase.json** file. Firebase has a CLI tool (firebase-tools) and it's recommend you use **firebase serve** to launch a local server. 
+
+Likewise, **firebase deploy** will deploy the project to **cs353-project.firebaseapp.com**.
+
+More information on firebase to follow. 

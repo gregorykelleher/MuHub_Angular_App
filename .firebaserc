@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "cs353-project"
+    "default": "cs353-project",
+    "cs353-project": "cs353-project"
   }
 }
