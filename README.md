@@ -98,14 +98,14 @@ CS353_project/
 |   |   ├── js/                  : JavaScript directory
 |   |   ├── services/            : angular services directory
 |   |   └── app.js               : application JavaScript file
-|	├── node_modules/                : dependencies installed via NPM 
-|	│   ├── angular-animate/         : animation hooks
-|	│   ├── angular-aria/            : accessibility 
-|	│   ├── angular-messages/        : messages 
-|	│   ├── angular-router/          : routing 
-|	|   ├── angular-material/        : angular material theming & styling
-|	|   ├── angularfire/             : angular bindings for firebase
-|	│   └── firebase/                : firebase backend service
+|	├── node_modules/            : dependencies installed via NPM 
+|	│   ├── angular-animate/     : animation hooks
+|	│   ├── angular-aria/        : accessibility 
+|	│   ├── angular-messages/    : messages 
+|	│   ├── angular-router/      : routing 
+|	|   ├── angular-material/    : angular material theming & styling
+|	|   ├── angularfire/         : angular bindings for firebase
+|	│   └── firebase/            : firebase backend service
 │   └── index.html               : main html page
 ├── .firebaserc                  : named alias definition for firebase CLI
 ├── .gitignore                   : git ignore file
