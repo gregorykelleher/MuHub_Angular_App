@@ -1,5 +1,4 @@
 .DS_Store
 logs/
 public/node_modules/
-public/package.json
 firebase-debug.log
