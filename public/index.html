@@ -24,8 +24,9 @@
         <script src="/app/js/firebase.js"></script>
 
         <!-- js -->
-        <script src="app/app.js"></script>
         <script src="app/js/main.js"></script>
+        <script src="/app/controllers/main_controller.js"></script>
+        <script src="app/app.js"></script>
 
         <!-- css -->
         <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
@@ -40,14 +41,13 @@
         </style>
 
     </head>
-    <body ng-app="cs353_project">
-
-        <md-toolbar>
+    <body ng-app="app" ng-controller="main_controller as mc">
+        <md-toolbar ng-controller="mc.test">
             <div class="md-toolbar-tools">
                 <md-button class="md-icon-button" aria-label="Icon">
                     <md-icon aria-label="menu" class="material-icons">menu</md-icon>
                 </md-button>
-                <h2><span class="md-flex">CS353 App</span></h2>
+                <h2><span class="md-flex"></span> {{ title }} </h2>
                 <span flex></span>
                 <md-button class="md-icon-button" aria-label="Icon">
                     <md-icon aria-label="message" class="material-icons">message</md-icon>
@@ -78,7 +78,7 @@
                         <md-grid-tile md-colspan-gt-sm="4" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="1">
                             <md-card layout-fill>
                                 <md-card-header layout-fill>
-                                    <h2>Map</h2>
+                                    <h2>map</h2>
                                 </md-card-header>
                             </md-card>
                         </md-grid-tile>

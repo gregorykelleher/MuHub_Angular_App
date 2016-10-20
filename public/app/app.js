@@ -1,6 +1,7 @@
 'use strict'
 
-angular.module('cs353_project', ['ngMaterial', 'firebase'])
+angular
+.module('app', ['ngMaterial', 'main', 'firebase'])
 .config(function($mdThemingProvider) {
 	$mdThemingProvider.theme('default')
 	.primaryPalette('teal')
