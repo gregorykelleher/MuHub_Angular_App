@@ -1,125 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
 
-        <!-- settings -->
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <!-- settings -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
 
-        <title>CS353 App</title>
+    <title>CS353 App</title>
 
-        <!-- angular -->
-        <script src="/node_modules/angular/angular.min.js"></script>
-        <script src="/node_modules/angular-aria/angular-aria.js"></script>
-        <script src="/node_modules/angular-animate/angular-animate.js"></script>
-        <script src="/node_modules/angular-material/angular-material.js"></script>
-        <script src="/node_modules/angularfire/dist/angularfire.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHiMMiK74Il_TwXnBNMEjF6-ziE6_Pjuc"></script>
 
-        <!-- firebase -->
-        <script src="/node_modules/firebase/firebase.js"></script>
-        <script src="/app/js/firebase.js"></script>
+    <!-- angular -->
+    <script src="/node_modules/angular/angular.min.js"></script>
+    <script src="/node_modules/angular-aria/angular-aria.js"></script>
+    <script src="/node_modules/angular-animate/angular-animate.js"></script>
+    <script src="/node_modules/angular-material/angular-material.js"></script>
+    <script src="/node_modules/angularfire/dist/angularfire.min.js"></script>
+    <script src="/node_modules/ngmap/build/scripts/ng-map.min.js"></script>
 
-        <!-- js -->
-        <script src="app/js/main.js"></script>
-        <script src="/app/controllers/main_controller.js"></script>
-        <script src="app/app.js"></script>
 
-        <!-- css -->
-        <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
-        <link rel="stylesheet" href="../node_modules/angular-material/angular-material.css"/>  
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- firebase -->
+    <script src="/node_modules/firebase/firebase.js"></script>
+    <script src="/app/js/firebase.js"></script>
 
-        <!-- hide when angular not yet loaded and initialised -->
-        <style type="text/css">
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-    display: none !important;
-}
-        </style>
+    <!-- js -->
+    <script src="app/js/main.js"></script>
+    <script src="/app/controllers/main_controller.js"></script>
+    <script src="app/app.js"></script>
 
-    </head>
-    <body ng-app="app" ng-controller="main_controller as mc">
-        <md-toolbar ng-controller="mc.test">
-            <div class="md-toolbar-tools">
-                <md-button class="md-icon-button" aria-label="Icon">
-                    <md-icon aria-label="menu" class="material-icons">menu</md-icon>
-                </md-button>
-                <h2><span class="md-flex"></span> {{ title }} </h2>
-                <span flex></span>
-                <md-button class="md-icon-button" aria-label="Icon">
-                    <md-icon aria-label="message" class="material-icons">message</md-icon>
-                </md-button>
-                <md-button class="md-icon-button" aria-label="Icon">
-                    <md-icon aria-label="account_circle" class="material-icons">account_circle</md-icon>
-                </md-button>
-                <md-button class="md-icon-button" aria-label="Icon">
-                    <md-icon aria-label="more_vert" class="material-icons">more_vert</md-icon>
-                </md-button>
-            </div>
-        </md-toolbar>
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-        <md-tabs class="md-primary" md-stretch-tabs="always" md-no-ink md-dynamic-height md-autoselect>
+    <!-- css -->
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link rel="stylesheet" href="../node_modules/angular-material/angular-material.css"/>  
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-            <md-tab label="map">
-                <md-content class="md-padding">
-                    <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:1">
+    <!-- hide when angular not yet loaded and initialised -->
+    <style type="text/css">
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
 
-                        <md-grid-tile md-colspan-gt-sm="2" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="1">
-                            <md-card layout-fill>
-                                <md-card-header layout-fill>
-                                    <h2>Locations</h2>
-                                </md-card-header>
-                            </md-card>
-                        </md-grid-tile>
+</head>
+<body ng-app="app" ng-controller="main_controller as mc">
+    <md-toolbar ng-controller="mc.test">
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Icon">
+                <md-icon aria-label="menu" class="material-icons">menu</md-icon>
+            </md-button>
+            <h2><span class="md-flex"></span> {{ title }} </h2>
+            <span flex></span>
+            <md-button class="md-icon-button" aria-label="Icon">
+                <md-icon aria-label="message" class="material-icons">message</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="Icon">
+                <md-icon aria-label="account_circle" class="material-icons">account_circle</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="Icon">
+                <md-icon aria-label="more_vert" class="material-icons">more_vert</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
 
-                        <md-grid-tile md-colspan-gt-sm="4" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="1">
-                            <md-card layout-fill>
-                                <md-card-header layout-fill>
-                                    <h2>map</h2>
-                                </md-card-header>
-                            </md-card>
-                        </md-grid-tile>
+    <md-tabs class="md-primary" md-stretch-tabs="always" md-no-ink md-dynamic-height md-autoselect>
 
-                    </md-grid-list>
-                </md-content>
-            </md-tab>
+        <md-tab label="map">
+            <md-content class="md-padding" flex>
+                <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:1">
 
-            <md-tab label="Dashboard">
-                <md-content class="md-padding">
-                    <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:1">
+                    <md-grid-tile md-colspan-gt-sm="2" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="1">
+                        <md-card layout-fill>
+                            <md-card-header layout-fill>
+                                <h2>Locations</h2>
+                            </md-card-header>
+                        </md-card>
+                    </md-grid-tile>
 
-                        <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="2">
-                            <md-card layout-fill>
-                                <md-card-header layout-fill>
-                                    <h2>Messages</h2>
-                                </md-card-header>
-                            </md-card>
-                        </md-grid-tile>
+                    <md-grid-tile md-colspan-gt-sm="4" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="1">
+                        <md-card layout-fill ng-controller="mc.ngmap">
+                         <md-card-content flex>
+                             <ng-map layout-fill center="[40.74, -74.18]"></ng-map>
+                         </md-card-content>
+                     </md-card>
+                 </md-grid-tile>
 
-                        <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="1" md-rowspan="1">
-                            <md-card layout-fill>
-                                <md-card-header layout-fill>
-                                    <h2>Weather</h2>
-                                </md-card-header>
-                            </md-card>
-                        </md-grid-tile>
+             </md-grid-list>
+         </md-content>
+     </md-tab>
 
-                        <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="2" md-rowspan="1">
-                            <md-card layout-fill>
-                                <md-card-header layout-fill>
-                                    <h2>Timetable</h2>
-                                </md-card-header>
-                            </md-card>
-                        </md-grid-tile>
+     <md-tab label="Dashboard">
+        <md-content class="md-padding">
+            <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:1">
 
-                    </md-grid-list>
-                </md-content>
-            </md-tab>
+                <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="2">
+                    <md-card layout-fill>
+                        <md-card-header layout-fill>
+                            <h2>Messages</h2>
+                        </md-card-header>
+                    </md-card>
+                </md-grid-tile>
 
-        </md-tabs>
+                <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="1" md-rowspan="1">
+                    <md-card layout-fill>
+                        <md-card-header layout-fill>
+                            <h2>Weather</h2>
+                        </md-card-header>
+                    </md-card>
+                </md-grid-tile>
 
-    </body>
+                <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="2" md-rowspan="1">
+                    <md-card layout-fill>
+                        <md-card-header layout-fill>
+                            <h2>Timetable</h2>
+                        </md-card-header>
+                    </md-card>
+                </md-grid-tile>
+
+            </md-grid-list>
+        </md-content>
+    </md-tab>
+
+</md-tabs>
+
+</body>
 </html>

@@ -6,10 +6,17 @@
 	function main_controller() {
 		var self = this;
 		self.test = test;
+		self.ngmap = ngmap;
 
 		function test($scope) {
 			$scope.title = "App";
 		}
+
+		function ngmap(NgMap) {
+			NgMap.getMap().then(function(map) {
+				map.height = "600px";
+			});
+		};
 
 	}
 
