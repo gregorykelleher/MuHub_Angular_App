@@ -50,7 +50,7 @@
 <body ng-app="app" ng-controller="main_controller as mc">
     <md-toolbar>
         <div class="md-toolbar-tools">
-        <h2><span class="md-flex"></span> Campus Locator </h2>
+            <h2><span class="md-flex"></span> Campus Locator </h2>
             <span flex></span>
             <md-button class="md-icon-button" aria-label="Icon">
                 <md-icon aria-label="message" class="material-icons">message</md-icon>
@@ -64,33 +64,47 @@
         </div>
     </md-toolbar>
 
-    <md-tabs class="md-primary" md-stretch-tabs="always" md-no-ink md-dynamic-height md-autoselect>
+    <md-tabs class="md-primary" md-stretch-tabs="always" md-no-ink md-dynamic-height md-autoselect flex>
 
         <md-tab label="map">
             <md-content class="md-padding" flex>
                 <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:1">
 
                     <md-grid-tile md-colspan-gt-sm="2" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="1">
-                        <md-card layout-fill>
-                            <md-card-header layout-fill>
-                                <md-title><h2>Locations</h2></md-title>
-                            </md-card-header>
+                    <md-card layout-fill ng-controller="mc.list">
+                            <md-toolbar layout="row" class="md-primary">
+                                <div class="md-toolbar-tools">
+                                    <span>Locations</span>
+                                </div>
+                            </md-toolbar>
+                            <md-subheader class="md-accent">North Campus</md-subheader>
+                            <md-card-content flex>
+                                <md-list layout-padding="">
+                                    <md-list-item class="md-3-line" ng-repeat="item in locations">
+                                        <div class="md-list-item-text" layout="column">
+                                            <h3>{{ item.room_name }}</h3>
+                                            <h4>{{ item.room_code }}</h4>
+                                            <p>{{ item.building }}</p>
+                                        </div>
+                                    </md-list-item>
+                                </md-list>
+                            </md-card-content>
                         </md-card>
                     </md-grid-tile>
 
                     <md-grid-tile md-colspan-gt-sm="4" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="1">
                         <md-card layout-fill ng-controller="mc.ngmap">
-                           <md-card-content flex>
-                               <ng-map layout-fill center="[40.74, -74.18]"></ng-map>
-                           </md-card-content>
-                       </md-card>
-                   </md-grid-tile>
+                         <md-card-content flex>
+                             <ng-map layout-fill center="[40.74, -74.18]"></ng-map>
+                         </md-card-content>
+                     </md-card>
+                 </md-grid-tile>
 
-               </md-grid-list>
-           </md-content>
-       </md-tab>
+             </md-grid-list>
+         </md-content>
+     </md-tab>
 
-       <md-tab label="Dashboard">
+     <md-tab label="Dashboard">
         <md-content class="md-padding">
             <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:1">
 

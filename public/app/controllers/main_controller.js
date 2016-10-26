@@ -5,17 +5,36 @@
 
 	function main_controller() {
 		var self = this;
-		// self.test = test;
 		self.ngmap = ngmap;
-
-		// function test($scope) {
-		// 	$scope.title = "App";
-		// }
+		self.list = list;
+		self.test = test;
 
 		function ngmap(NgMap) {
 			NgMap.getMap().then(function(map) {
-				
 			});
+		};
+
+		function test($scope) {
+			$scope.greetings = [
+			{
+				word: 'hello'
+			}
+			];
+		};
+
+		function list($scope) {
+			$scope.locations = [
+			{
+				room_name: 'Iontas Lecture Theatre',
+				room_code: 'IONTH',
+				building: 'Iontas'
+			},
+			{
+				room_name: 'Iontas Seminar Room 0.32',
+				room_code: 'IONSEM',
+				building: 'Iontas'
+			}
+			];
 		};
 
 	}
