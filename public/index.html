@@ -38,7 +38,6 @@
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
     <link rel="stylesheet" href="../node_modules/angular-material/angular-material.css"/>  
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="/app/css/main.css" rel="stylesheet">
 
     <!-- hide when angular not yet loaded and initialised -->
     <style type="text/css">
@@ -81,30 +80,21 @@
                             </md-toolbar>
 
                             <md-card-content flex layout="column">
+
                                 <md-subheader class="md-accent">North Campus</md-subheader>
 
-<!--                                 <md-virtual-repeat-container layout-padding="" layout-fill>
-                                    <div md-virtual-repeat="item in north_campus" flex="">
-                                        {{ item.room_name }}
-                                    </div>
-                                </md-virtual-repeat-container>
-                            -->
-
-                            <md-list>
-                                <!-- You can even put a static header item up here -->
-                                <md-virtual-repeat-container layout-padding="" layout-fill flex style="height:400px;">
-                                    <md-list-item flex md-virtual-repeat="item in north_campus">
-                                        <div class="md-list-item-text" layout="column">
-                                            <h4>{{ item.room_name }}</h4>
-                                            <h5>{{ item.room_code }}</h5>
-                                            <p>{{ item.building }}</p>
-                                        </div>
-                                        <md-divider></md-divider>
-                                    </md-list-item>
-                                </md-virtual-repeat-container>
-                            </md-list>
-
-
+                                <md-list flex>
+                                    <md-virtual-repeat-container layout-fill style="height:auto;">
+                                        <md-list-item flex layout-fill md-virtual-repeat="item in north_campus">
+                                            <div class="md-list-item-text" layout="column">
+                                                <h4>{{item.room_name}}</h4>
+                                                <h5>{{item.room_code}}</h5>
+                                                <p>{{item.building}}</p>
+                                            </div>
+                                            <md-divider></md-divider>
+                                        </md-list-item>
+                                    </md-virtual-repeat-container>
+                                </md-list>
 
                                 <!-- <section>
                                     <md-list layout-padding="">

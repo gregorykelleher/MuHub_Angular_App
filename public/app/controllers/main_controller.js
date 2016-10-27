@@ -15,11 +15,6 @@
 
 		function list($scope) {
 
-			$scope.items = [];
-			for (var i = 0; i < 1000; i++) {
-				$scope.items.push(i);
-			}
-
 			$scope.north_campus = [
 			{
 				room_name: 'Iontas Lecture Theatre',
@@ -73,6 +68,16 @@
 			},
 			{
 				room_name: 'Test 9',
+				room_code: 'IONTH',
+				building: 'Iontas'
+			},
+			{
+				room_name: 'Test 10',
+				room_code: 'IONTH',
+				building: 'Iontas'
+			},
+			{
+				room_name: 'Test 11',
 				room_code: 'IONTH',
 				building: 'Iontas'
 			}
