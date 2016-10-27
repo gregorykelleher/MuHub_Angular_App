@@ -38,6 +38,7 @@
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
     <link rel="stylesheet" href="../node_modules/angular-material/angular-material.css"/>  
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="/app/css/main.css" rel="stylesheet">
 
     <!-- hide when angular not yet loaded and initialised -->
     <style type="text/css">
@@ -71,40 +72,84 @@
                 <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:1">
 
                     <md-grid-tile md-colspan-gt-sm="2" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="1">
-                    <md-card layout-fill ng-controller="mc.list">
+                        <md-card layout-fill ng-controller="mc.list">
+
                             <md-toolbar layout="row" class="md-primary">
                                 <div class="md-toolbar-tools">
                                     <span>Locations</span>
                                 </div>
                             </md-toolbar>
-                            <md-subheader class="md-accent">North Campus</md-subheader>
-                            <md-card-content flex>
-                                <md-list layout-padding="">
-                                    <md-list-item class="md-3-line" ng-repeat="item in locations">
+
+                            <md-card-content flex layout="column">
+                                <md-subheader class="md-accent">North Campus</md-subheader>
+
+<!--                                 <md-virtual-repeat-container layout-padding="" layout-fill>
+                                    <div md-virtual-repeat="item in north_campus" flex="">
+                                        {{ item.room_name }}
+                                    </div>
+                                </md-virtual-repeat-container>
+                            -->
+
+                            <md-list>
+                                <!-- You can even put a static header item up here -->
+                                <md-virtual-repeat-container layout-padding="" layout-fill flex style="height:400px;">
+                                    <md-list-item flex md-virtual-repeat="item in north_campus">
                                         <div class="md-list-item-text" layout="column">
-                                            <h3>{{ item.room_name }}</h3>
-                                            <h4>{{ item.room_code }}</h4>
+                                            <h4>{{ item.room_name }}</h4>
+                                            <h5>{{ item.room_code }}</h5>
                                             <p>{{ item.building }}</p>
                                         </div>
+                                        <md-divider></md-divider>
                                     </md-list-item>
-                                </md-list>
+                                </md-virtual-repeat-container>
+                            </md-list>
+
+
+
+                                <!-- <section>
+                                    <md-list layout-padding="">
+                                        <md-list-item class="md-3-line" ng-repeat="item in north_campus">
+                                            <div class="md-list-item-text" layout="column">
+                                                <h3>{{ item.room_name }}</h3>
+                                                <h4>{{ item.room_code }}</h4>
+                                                <p>{{ item.building }}</p>
+                                            </div>
+                                            <md-divider></md-divider>
+                                        </md-list-item>
+                                    </md-list>
+                                </section>
+
+                                <section>
+                                    <md-subheader class="md-accent">South Campus</md-subheader>
+                                    <md-list layout-padding="">
+                                        <md-list-item class="md-3-line" ng-repeat="item in south_campus">
+                                            <div class="md-list-item-text" layout="column">
+                                                <h3>{{ item.room_name }}</h3>
+                                                <h4>{{ item.room_code }}</h4>
+                                                <p>{{ item.building }}</p>
+                                            </div>
+                                            <md-divider></md-divider>
+                                        </md-list-item>
+                                    </md-list>
+                                </section> -->
+
                             </md-card-content>
                         </md-card>
                     </md-grid-tile>
 
                     <md-grid-tile md-colspan-gt-sm="4" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="1">
                         <md-card layout-fill ng-controller="mc.ngmap">
-                         <md-card-content flex>
-                             <ng-map layout-fill center="[40.74, -74.18]"></ng-map>
-                         </md-card-content>
-                     </md-card>
-                 </md-grid-tile>
+                           <md-card-content flex>
+                               <ng-map layout-fill center="[40.74, -74.18]"></ng-map>
+                           </md-card-content>
+                       </md-card>
+                   </md-grid-tile>
 
-             </md-grid-list>
-         </md-content>
-     </md-tab>
+               </md-grid-list>
+           </md-content>
+       </md-tab>
 
-     <md-tab label="Dashboard">
+       <md-tab label="Dashboard">
         <md-content class="md-padding">
             <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:1">
 
