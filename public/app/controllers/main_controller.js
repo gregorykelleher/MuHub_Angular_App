@@ -15,83 +15,101 @@
 
 		function list($scope) {
 
-			$scope.north_campus = [
+			$scope.$watch('topIndex', angular.bind(this, function(topIndex) {
+				if($scope.locations[topIndex].campus == "north") {
+					$scope.subheader = "North Campus"
+				}
+				else if($scope.locations[topIndex].campus == "south") {
+					$scope.subheader = "South Campus"
+				}
+			}));
+
+			$scope.locations = [
 			{
 				room_name: 'Iontas Lecture Theatre',
 				room_code: 'IONTH',
-				building: 'Iontas'
+				building: 'Iontas',
+				campus: 'north'
 			},
 			{
 				room_name: 'Iontas Seminar Room 0.32',
 				room_code: 'IONSEM',
-				building: 'Iontas'
+				building: 'Iontas',
+				campus: 'north'
 			},
 			{
-				room_name: 'Test 1',
-				room_code: 'IONTH',
-				building: 'Iontas'
+				room_name: 'John Hume Lecture 1',
+				room_code: 'JH1',
+				building: 'John Hume Building',
+				campus: 'north'
 			},
 			{
-				room_name: 'Test 2',
-				room_code: 'IONTH',
-				building: 'Iontas'
+				room_name: 'John Hume Lecture 2',
+				room_code: 'JH2',
+				building: 'John Hume Building',
+				campus: 'north'
 			},
 			{
-				room_name: 'Test 3',
-				room_code: 'IONTH',
-				building: 'Iontas'
+				room_name: 'John Hume Lecture 3',
+				room_code: 'JH3',
+				building: 'John Hume Building',
+				campus: 'north'
 			},
 			{
-				room_name: 'Test 4',
-				room_code: 'IONTH',
-				building: 'Iontas'
+				room_name: 'John Hume Lecture 4',
+				room_code: 'JH4',
+				building: 'John Hume Building',
+				campus: 'north'
 			},
 			{
-				room_name: 'Test 5',
-				room_code: 'IONTH',
-				building: 'Iontas'
+				room_name: 'John Hume Lecture 5',
+				room_code: 'JH5',
+				building: 'John Hume Building',
+				campus: 'north'
 			},
 			{
-				room_name: 'Test 6',
-				room_code: 'IONTH',
-				building: 'Iontas'
+				room_name: 'John Hume Lecture 6',
+				room_code: 'JH6',
+				building: 'John Hume Building',
+				campus: 'north'
 			},
 			{
-				room_name: 'Test 7',
-				room_code: 'IONTH',
-				building: 'Iontas'
+				room_name: 'Maths Hall',
+				room_code: 'MAH',
+				building: 'Logic House',
+				campus: 'south'
 			},
 			{
-				room_name: 'Test 8',
-				room_code: 'IONTH',
-				building: 'Iontas'
+				room_name: 'Room 2.21 First Floor',
+				room_code: 'RH2.21',
+				building: 'Rowan House',
+				campus: 'south'
 			},
 			{
-				room_name: 'Test 9',
-				room_code: 'IONTH',
-				building: 'Iontas'
-			},
-			{
-				room_name: 'Test 10',
-				room_code: 'IONTH',
-				building: 'Iontas'
-			},
-			{
-				room_name: 'Test 11',
-				room_code: 'IONTH',
-				building: 'Iontas'
-			}
-			];
-			$scope.south_campus = [
-			{
-				room_name: 'Hall 5',
-				room_code: 'LOGIC',
-				building: 'Logic House'
+				room_name: 'Geography Roque Lab',
+				room_code: 'GR',
+				building: 'Rhetoric House',
+				campus: 'south'
 			},
 			{
 				room_name: 'Physics Hall',
-				room_code: 'PSYHAL',
-				building: 'Rhetoric House'
+				room_code: 'PH',
+				building: 'Long Corridor',
+				campus: 'south'
+			},
+			{
+				room_name: 'Callan Hall',
+				room_code: 'CH',
+				building: 'Long Corridor',
+				campus: 'south'
+			}
+			];
+			$scope.somewhere = [
+			{
+				room_name: 'Chocolate',
+				room_code: 'Rabbit',
+				building: 'Cabbage',
+				campus: 'Banana'
 			}
 			];
 		};

@@ -80,98 +80,74 @@
                             </md-toolbar>
 
                             <md-card-content flex layout="column">
+                                <section flex layout="column">
+                                    <md-subheader class="md-accent" ng-model="subheader">{{subheader}}</md-subheader>
+                                    <md-list flex>
+                                        <md-virtual-repeat-container layout-fill style="height:auto;" md-top-index="topIndex">
+                                            <md-list flex>
+                                                <md-list-item flex layout-fill md-virtual-repeat="item in locations | orderBy: 'campus'">
+                                                    <div class="md-list-item-text" layout="column" layout-padding="">
+                                                        <md-button class="md-primary">{{item.room_name}}</md-button>
+                                                        <div layout-padding>
+                                                            <h5>{{item.room_code}}</h5>
+                                                            <p>{{item.building}}</p>
+                                                        </div>
+                                                    </div>
+                                                    <md-divider></md-divider>
+                                                </md-list-item>
+                                            </md-list>
+                                        </md-virtual-repeat-container>
+                                    </section>
 
-                                <md-subheader class="md-accent">North Campus</md-subheader>
+                                </md-card-content>
+                            </md-card>
+                        </md-grid-tile>
 
-                                <md-list flex>
-                                    <md-virtual-repeat-container layout-fill style="height:auto;">
-                                        <md-list-item flex layout-fill md-virtual-repeat="item in north_campus">
-                                            <div class="md-list-item-text" layout="column">
-                                                <h4>{{item.room_name}}</h4>
-                                                <h5>{{item.room_code}}</h5>
-                                                <p>{{item.building}}</p>
-                                            </div>
-                                            <md-divider></md-divider>
-                                        </md-list-item>
-                                    </md-virtual-repeat-container>
-                                </md-list>
+                        <md-grid-tile md-colspan-gt-sm="4" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="1">
+                            <md-card layout-fill ng-controller="mc.ngmap">
+                               <md-card-content flex>
+                                   <ng-map layout-fill center="[40.74, -74.18]"></ng-map>
+                               </md-card-content>
+                           </md-card>
+                       </md-grid-tile>
 
-                                <!-- <section>
-                                    <md-list layout-padding="">
-                                        <md-list-item class="md-3-line" ng-repeat="item in north_campus">
-                                            <div class="md-list-item-text" layout="column">
-                                                <h3>{{ item.room_name }}</h3>
-                                                <h4>{{ item.room_code }}</h4>
-                                                <p>{{ item.building }}</p>
-                                            </div>
-                                            <md-divider></md-divider>
-                                        </md-list-item>
-                                    </md-list>
-                                </section>
+                   </md-grid-list>
+               </md-content>
+           </md-tab>
 
-                                <section>
-                                    <md-subheader class="md-accent">South Campus</md-subheader>
-                                    <md-list layout-padding="">
-                                        <md-list-item class="md-3-line" ng-repeat="item in south_campus">
-                                            <div class="md-list-item-text" layout="column">
-                                                <h3>{{ item.room_name }}</h3>
-                                                <h4>{{ item.room_code }}</h4>
-                                                <p>{{ item.building }}</p>
-                                            </div>
-                                            <md-divider></md-divider>
-                                        </md-list-item>
-                                    </md-list>
-                                </section> -->
+           <md-tab label="Dashboard">
+            <md-content class="md-padding">
+                <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:1">
 
-                            </md-card-content>
+                    <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="2">
+                        <md-card layout-fill>
+                            <md-card-header layout-fill>
+                                <h2>Messages</h2>
+                            </md-card-header>
                         </md-card>
                     </md-grid-tile>
 
-                    <md-grid-tile md-colspan-gt-sm="4" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="1">
-                        <md-card layout-fill ng-controller="mc.ngmap">
-                           <md-card-content flex>
-                               <ng-map layout-fill center="[40.74, -74.18]"></ng-map>
-                           </md-card-content>
-                       </md-card>
-                   </md-grid-tile>
+                    <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="1" md-rowspan="1">
+                        <md-card layout-fill>
+                            <md-card-header layout-fill>
+                                <h2>Weather</h2>
+                            </md-card-header>
+                        </md-card>
+                    </md-grid-tile>
 
-               </md-grid-list>
-           </md-content>
-       </md-tab>
+                    <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="2" md-rowspan="1">
+                        <md-card layout-fill>
+                            <md-card-header layout-fill>
+                                <h2>Timetable</h2>
+                            </md-card-header>
+                        </md-card>
+                    </md-grid-tile>
 
-       <md-tab label="Dashboard">
-        <md-content class="md-padding">
-            <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:1">
+                </md-grid-list>
+            </md-content>
+        </md-tab>
 
-                <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="2">
-                    <md-card layout-fill>
-                        <md-card-header layout-fill>
-                            <h2>Messages</h2>
-                        </md-card-header>
-                    </md-card>
-                </md-grid-tile>
-
-                <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="1" md-rowspan="1">
-                    <md-card layout-fill>
-                        <md-card-header layout-fill>
-                            <h2>Weather</h2>
-                        </md-card-header>
-                    </md-card>
-                </md-grid-tile>
-
-                <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="2" md-rowspan="1">
-                    <md-card layout-fill>
-                        <md-card-header layout-fill>
-                            <h2>Timetable</h2>
-                        </md-card-header>
-                    </md-card>
-                </md-grid-tile>
-
-            </md-grid-list>
-        </md-content>
-    </md-tab>
-
-</md-tabs>
+    </md-tabs>
 
 </body>
 </html>
