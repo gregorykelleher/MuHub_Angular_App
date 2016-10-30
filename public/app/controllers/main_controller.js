@@ -5,115 +5,31 @@
 
 	function main_controller() {
 		var self = this;
-		self.ngmap = ngmap;
-		self.list = list;
+		self.map = map;
 
-		function ngmap(NgMap) {
+		function map($scope, NgMap, $firebaseArray) {
+
+			// add map to scope
 			NgMap.getMap().then(function(map) {
+				$scope.map = map;
 			});
-		};
 
-		function list($scope) {
+			// pull location data from firebase
+			var ref = firebase.database().ref().child("locations");
+			$scope.locations = $firebaseArray(ref);
 
-			$scope.$watch('topIndex', angular.bind(this, function(topIndex) {
-				if($scope.locations[topIndex].campus == "north") {
-					$scope.subheader = "North Campus"
-				}
-				else if($scope.locations[topIndex].campus == "south") {
-					$scope.subheader = "South Campus"
-				}
-			}));
+			$scope.addMarker = function(item) {
+				
+				// display marker and info window
+				$scope.location = item;
+				$scope.map.showInfoWindow('info', 'marker');
 
-			$scope.locations = [
-			{
-				room_name: 'Iontas Lecture Theatre',
-				room_code: 'IONTH',
-				building: 'Iontas',
-				campus: 'north'
-			},
-			{
-				room_name: 'Iontas Seminar Room 0.32',
-				room_code: 'IONSEM',
-				building: 'Iontas',
-				campus: 'north'
-			},
-			{
-				room_name: 'John Hume Lecture 1',
-				room_code: 'JH1',
-				building: 'John Hume Building',
-				campus: 'north'
-			},
-			{
-				room_name: 'John Hume Lecture 2',
-				room_code: 'JH2',
-				building: 'John Hume Building',
-				campus: 'north'
-			},
-			{
-				room_name: 'John Hume Lecture 3',
-				room_code: 'JH3',
-				building: 'John Hume Building',
-				campus: 'north'
-			},
-			{
-				room_name: 'John Hume Lecture 4',
-				room_code: 'JH4',
-				building: 'John Hume Building',
-				campus: 'north'
-			},
-			{
-				room_name: 'John Hume Lecture 5',
-				room_code: 'JH5',
-				building: 'John Hume Building',
-				campus: 'north'
-			},
-			{
-				room_name: 'John Hume Lecture 6',
-				room_code: 'JH6',
-				building: 'John Hume Building',
-				campus: 'north'
-			},
-			{
-				room_name: 'Maths Hall',
-				room_code: 'MAH',
-				building: 'Logic House',
-				campus: 'south'
-			},
-			{
-				room_name: 'Room 2.21 First Floor',
-				room_code: 'RH2.21',
-				building: 'Rowan House',
-				campus: 'south'
-			},
-			{
-				room_name: 'Geography Roque Lab',
-				room_code: 'GR',
-				building: 'Rhetoric House',
-				campus: 'south'
-			},
-			{
-				room_name: 'Physics Hall',
-				room_code: 'PH',
-				building: 'Long Corridor',
-				campus: 'south'
-			},
-			{
-				room_name: 'Callan Hall',
-				room_code: 'CH',
-				building: 'Long Corridor',
-				campus: 'south'
+				// dynamic map re-centering
+				var coords = new google.maps.LatLng(item.coords.lat, item.coords.lng);
+				$scope.map.panTo(coords);
+
 			}
-			];
-			$scope.somewhere = [
-			{
-				room_name: 'Chocolate',
-				room_code: 'Rabbit',
-				building: 'Cabbage',
-				campus: 'Banana'
-			}
-			];
 		};
-
 	}
-
+	
 })();
