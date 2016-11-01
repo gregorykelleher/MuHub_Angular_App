@@ -7,7 +7,7 @@ angular
 	$mdThemingProvider.theme('default')
 	.primaryPalette('teal')
 
-	$urlRouterProvider.otherwise('/main');
+	$urlRouterProvider.otherwise('/login');
 
 	$stateProvider
 	.state('main', {
@@ -15,6 +15,12 @@ angular
 		templateUrl: 'app/views/main.html',
 		controller: 'main_controller',
 		controllerAs: 'mc'
+	})
+	.state('login', {
+		url: '/login',
+		templateUrl: 'app/views/login.html',
+		controller: 'login_controller',
+		controllerAs: 'lg'
 	})
 });
 

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<style>
+  body {
+    background: url(/app/imgs/back.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+</style>
+<head>
+  <div layout="row" layout-align="center center" style="min-height: 600px">
+    <div layout="column" class="md-whiteframe-z3" style="min-width: 350px">
+
+      <md-content layout-padding>
+        <div class="md-icon-button" aria-label="Icon" style="text-align: center;">
+          <md-icon style="height: 100px; width: 100px; padding-bottom: 20px" md-svg-src="/app/imgs/account_circle.svg" aria-label="account_circle"></md-icon>
+        </div>
+
+        <div layout="column" layout-padding>
+          <md-input-container>
+            <label>Student Number</label>
+            <input type="email" ng-model="username"/>
+          </md-input-container>
+
+          <md-input-container>
+            <label>Password</label>
+            <input type="password" ng-model="password"/>
+          </md-input-container>
+        </div>
+
+        <div layout="row" layout-align="center center" style="padding-top:20px;">
+          <div flex="flex"></div>
+          <md-button class="md-raised md-primary">Login</md-button>
+          <div flex="flex"></div>
+        </div>
+
+      </md-content>
+    </div>
+  </div>
+</head>
+<body>
+</body>
+</html>
+
+
+
