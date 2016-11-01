@@ -137,41 +137,25 @@
 
                     <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="2">
                         <md-card layout-fill>
-                            <md-toolbar layout="row" class="md-primary">
-                                <div class="md-toolbar-tools">
-                                    <span>Messages</span></br>
-                                </div>
-                            </md-toolbar>
+                            <md-card-header layout-fill>
+                                <h2>Messages</h2>
+                            </md-card-header>
                         </md-card>
                     </md-grid-tile>
 
                     <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="1" md-rowspan="1">
                         <md-card layout-fill>
-                            <md-toolbar layout="row" class="md-primary">
-                                <div class="md-toolbar-tools">
-                                    <span>Weather</span></br>
-                                </div>
-                            </md-toolbar>
-							<md-card-content>
-									<span style="text-align:right">Maynooth</span>
-									<p id="tempnow" style="font-weight:lighter;"></p>
-									<img id="iconnow"></img>
-									<p id="descnow"></p>
-									<p id="pressure"></p>
-							</md-card-content>
+                            <md-card-header layout-fill>
+                                <h2>Weather</h2>
+                            </md-card-header>
                         </md-card>
                     </md-grid-tile>
 
                     <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="2" md-rowspan="1">
                         <md-card layout-fill>
-                            <md-toolbar layout="row" class="md-primary">
-                                <div class="md-toolbar-tools">
-                                    <span>Timetable</span></br>
-                                </div>
-								<md-button class="md-icon-button" aria-label="Icon">
-									<md-icon aria-label="mode_edit" class="material-icons">mode_edit</md-icon>
-								</md-button>
-                            </md-toolbar>
+                            <md-card-header layout-fill>
+                                <h2>Timetable</h2>
+                            </md-card-header>
                         </md-card>
                     </md-grid-tile>
 
@@ -180,16 +164,4 @@
         </md-tab>
     </md-tabs>
 </body>
-<script>
-$(function(){
-	var data;
-	$.getJSON("http://api.openweathermap.org/data/2.5/forecast?lat=53.382865&lon=-6.594228&units=metric&APPID=9a86698b1609d667ed7132ec8105fc0a", function(wd){
-		console.log(wd);
-		document.getElementById("tempnow").innerHTML=wd.list[0].main.temp+'\u00B0C';
-		document.getElementById("descnow").innerHTML=wd.list[0].weather[0].description;
-		document.getElementById("pressure").innerHTML=wd.list[0].main.pressure;
-				
-	})
-})
-</script>
 </html>
