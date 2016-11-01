@@ -10,9 +10,5 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
-function saveAnalogData(value) {
-	firebase.database().ref('data/').push({
-		data: value
-	});
-}
+
 
