@@ -13,15 +13,15 @@
   <div layout="row" layout-align="center center" style="min-height: 600px">
     <div layout="column" class="md-whiteframe-z3" style="min-width: 350px">
 
-      <md-content layout-padding>
+      <md-content layout-padding ng-controller="lg.login">
         <div class="md-icon-button" aria-label="Icon" style="text-align: center;">
           <md-icon style="height: 100px; width: 100px; padding-bottom: 20px" md-svg-src="/app/imgs/account_circle.svg" aria-label="account_circle"></md-icon>
         </div>
 
         <div layout="column" layout-padding>
           <md-input-container>
-            <label>Student Number</label>
-            <input type="email" ng-model="username"/>
+            <label>Email Address</label>
+            <input type="email" ng-model="email"/>
           </md-input-container>
 
           <md-input-container>
@@ -30,11 +30,17 @@
           </md-input-container>
         </div>
 
-        <div layout="row" layout-align="center center" style="padding-top:20px;">
+        <div layout="row">
           <div flex="flex"></div>
-          <md-button class="md-raised md-primary">Login</md-button>
+          <md-button ng-click="sign_in()" class="md-raised md-primary">Login</md-button>
+          <div flex="flex"></div>
+          <md-button ng-click="register()" class="md-raised">Register</md-button>
           <div flex="flex"></div>
         </div>
+
+        <p ng-if="message">Message: <strong>{{ message }}</strong></p>
+        <p ng-if="error">Error: <strong>{{ error }}</strong></p>
+
       </md-content>
     </div>
   </div>
