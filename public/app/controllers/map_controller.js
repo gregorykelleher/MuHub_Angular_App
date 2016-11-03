@@ -1,9 +1,9 @@
 (function(){
 	angular
 	.module('main')
-	.controller('main_controller', [main_controller]);
+	.controller('map_controller', [map_controller]);
 
-	function main_controller() {
+	function map_controller() {
 		var self = this;
 		self.map = map;
 

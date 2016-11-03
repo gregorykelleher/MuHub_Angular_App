@@ -12,9 +12,9 @@ angular
 	$stateProvider
 	.state('main', {
 		url: '/home',
-		templateUrl: 'app/views/main.html',
-		controller: 'main_controller',
-		controllerAs: 'mc'
+		templateUrl: 'app/views/dashboard.html',
+		controller: 'map_controller',
+		controllerAs: 'mp'
 	})
 	.state('login', {
 		url: '/login',
