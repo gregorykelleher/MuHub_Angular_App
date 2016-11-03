@@ -113,8 +113,13 @@ function loginform() {
 
 
 
+<<<<<<< HEAD
+
+
+=======
 function saveAnalogData(value) {
 	firebase.database().ref('data/').push({
 		data: value
 	});
 }
+>>>>>>> firebase_bindings
