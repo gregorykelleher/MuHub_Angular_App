@@ -24,26 +24,29 @@
 				$scope.error = null;
 
 				var substring = "@mumail.ie";
+				var email = $scope.email;
 
-				function check_email(substring) {
-					if(substring == null) { 
+				function check_email(email) {
+					if(email == null) { 
 						return false; 
 					}
-					else if(substring.indexOf(substring) !== -1) {
+					if(email.indexOf(substring) !== -1) {
 						return true;
 					} 
 					else return false;
 				}
 
-				if(check_email(substring) == true) {
+				if(check_email(email) == true) {
 					Auth.$createUserWithEmailAndPassword($scope.email, $scope.password)
 					.then(function(firebaseUser) {
+						$scope.message = "User created with uid: " + firebaseUser.uid;
 						toast($scope.message);
 					}).catch(function(error) {
-						toast(error.message);
+						$scope.error = error.message;
+							toast($scope.error);
 					});
 				}
-				else if(check_email(substring) == false) {
+				else if(check_email(email) == false) {
 					toast("Not a valid '@mumail' account");
 				}
 			}
@@ -54,9 +57,9 @@
 
 				Auth.$signInWithEmailAndPassword($scope.email, $scope.password)
 				.then(function(firebaseUser) {
-					toast($scope.message);
+					$scope.message = "User signed in with uid: " + firebaseUser.uid;
 				}).catch(function(error) {
-					toast($scope.error);
+					$scope.error = error;
 				});
 			}
 
