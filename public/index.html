@@ -29,6 +29,7 @@
         <script src="app/app.js"></script>
 
         <!-- css -->
+         <link rel="stylesheet" href="app/style.css"> 
         <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
         <link rel="stylesheet" href="../node_modules/angular-material/angular-material.css"/>  
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -49,12 +50,60 @@
                 </md-button>
                 <h2><span class="md-flex"></span> {{ title }} </h2>
                 <span flex></span>
+
                 <md-button class="md-icon-button" aria-label="Icon">
                     <md-icon aria-label="message" class="material-icons">message</md-icon>
                 </md-button>
-                <md-button class="md-icon-button" aria-label="Icon">
+          
+            
+       
+                    <md-button id = "myBtn" class="md-icon-button" onclick="loginform()">
                     <md-icon aria-label="account_circle" class="material-icons">account_circle</md-icon>
-                </md-button>
+                
+
+                 </md-button> 
+                            
+                
+                        <div id="myModal" class="modal">
+                              <!-- Modal content -->
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <span class="close">×</span>
+                                  <h2>Login/Register</h2>
+                                </div>
+                                <div class="modal-body">
+                                  
+                                  <div class ="container"> 
+
+                                   <md-input-container class="md-icon-float md-block">
+                                          <!-- Use floating label instead of placeholder -->
+                                          <label>example@mumail.ie</label>
+                                          <input  id = "txtEmail" ng-model="email" type="text">
+                                          </md-input-container>
+
+                                   <md-input-container class="md-icon-float md-block">
+                                          <!-- Use floating label instead of placeholder -->
+                                          <label>Password</label>
+                                          <input  id = "txtPassword" ng-model="Password" type="Password">
+                                          </md-input-container>
+
+                                  <button id= "btnLogin" class= "btn btn-action" > Log in </button>
+
+                                  <button id =  "btnSignup" class= "btn btn-secondary" > Sign up</button>
+
+
+                                  <button id= "btnLogout" class= "btn btn-action hide"> Log out </button>
+                                </div>
+                               <!-- <div class="modal-footer">
+                                  <h3>Modal Footer</h3>
+                                </div>-->
+                              </div>
+
+                            </div>
+                            </div>
+                      
+                    
+                                
                 <md-button class="md-icon-button" aria-label="Icon">
                     <md-icon aria-label="more_vert" class="material-icons">more_vert</md-icon>
                 </md-button>
@@ -102,16 +151,15 @@
                         <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="1" md-rowspan="1">
                             <md-card layout-fill>
                                 <md-card-header layout-fill>
-                                    <h2>Weather</h2>
-                                    <div class="container"> 
-                                    <input id ="txtEmail" type = "email" placeholder="Email">
-                                    <input id = "txtpassword" type="password" placeholder="password">
-                                    
-                                    <button id ="btnLogin" class="btn btn-action"> Log in </button>
-                                    <button id ="btnSignup" class="btn btn-secondary"> Sign up </button>
-                                    
-                                    <button id = "btnLogout" class = "btn btn-action hide"> Log out </button>
-                                    </div>  
+                                                                        
+                                        <md-input-container class="md-icon-float md-block">
+                                          <!-- Use floating label instead of placeholder -->
+                                          <label>comment</label>
+                                          <input  md-maxlength="200" ng-model="user.name" type="text">
+                                           <md-button class="md-raised" ng-click="addItem()" type="button">Post</md-button>
+                                        </md-input-container>
+
+                                   
                                 </md-card-header>
                             </md-card>
                         </md-grid-tile>
