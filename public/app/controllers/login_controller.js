@@ -7,9 +7,7 @@
 		var self = this;
 		self.login = login;
 
-		function login($scope, $firebaseAuth, Auth, $mdToast) {
-
-			var auth = $firebaseAuth();
+		function login($scope, Auth, $mdToast) {
 
 			function toast(message) {
 				$mdToast.show(
@@ -30,7 +28,7 @@
 					if(email == null) { 
 						return false; 
 					}
-					if(email.indexOf(substring) !== -1) {
+					else if(email.indexOf(substring) !== -1) {
 						return true;
 					} 
 					else return false;
@@ -43,7 +41,7 @@
 						toast($scope.message);
 					}).catch(function(error) {
 						$scope.error = error.message;
-							toast($scope.error);
+						toast($scope.error);
 					});
 				}
 				else if(check_email(email) == false) {
@@ -54,13 +52,24 @@
 			$scope.sign_in = function() {
 				$scope.message = null;
 				$scope.error = null;
+				$scope.email = null;
 
-				Auth.$signInWithEmailAndPassword($scope.email, $scope.password)
-				.then(function(firebaseUser) {
-					$scope.message = "User signed in with uid: " + firebaseUser.uid;
-				}).catch(function(error) {
-					$scope.error = error;
-				});
+				function isEmail(email) {
+					var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+					console.log(regex.test(email));
+					return regex.test(email);
+				}
+
+				if (isEmail($scope.email)) {
+					Auth.$signInWithEmailAndPassword($scope.email, $scope.password)
+					.then(function(firebaseUser) {
+						$scope.message = "User signed in with uid: " + firebaseUser.uid;
+						toast($scope.message);
+					}).catch(function(error) {
+						toast(error.message);
+					});
+				}
+				else { toast("Not a valid email address"); };
 			}
 
 		};
