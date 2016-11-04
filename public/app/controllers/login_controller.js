@@ -7,7 +7,7 @@
 		var self = this;
 		self.login = login;
 
-		function login($scope, Auth, $mdToast) {
+		function login($scope, Auth, $mdToast, $state) {
 
 			function toast(message) {
 				$mdToast.show(
@@ -15,7 +15,7 @@
 					.textContent(message)
 					.hideDelay(3000)
 					);
-			}
+			};
 
 			$scope.register = function() {
 				$scope.message = null;
@@ -35,10 +35,13 @@
 				}
 
 				if(check_email(email) == true) {
+
 					Auth.$createUserWithEmailAndPassword($scope.email, $scope.password)
 					.then(function(firebaseUser) {
-						$scope.message = "User created with uid: " + firebaseUser.uid;
-						toast($scope.message);
+
+						toast('Sending email verification email now. Check your inbox!');
+						firebaseUser.sendEmailVerification();
+
 					}).catch(function(error) {
 						$scope.error = error.message;
 						toast($scope.error);
@@ -52,26 +55,28 @@
 			$scope.sign_in = function() {
 				$scope.message = null;
 				$scope.error = null;
-				$scope.email = null;
 
 				function isEmail(email) {
 					var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-					console.log(regex.test(email));
 					return regex.test(email);
 				}
 
 				if (isEmail($scope.email)) {
 					Auth.$signInWithEmailAndPassword($scope.email, $scope.password)
 					.then(function(firebaseUser) {
-						$scope.message = "User signed in with uid: " + firebaseUser.uid;
-						toast($scope.message);
+						if (!firebaseUser.emailVerified) {
+							toast('Your email is not verified.');
+							$state.go('login');
+						} else { 
+							$state.go('home'); 
+							toast("You've been signed in");
+						};
 					}).catch(function(error) {
 						toast(error.message);
 					});
 				}
 				else { toast("Not a valid email address"); };
 			}
-
 		};
 	}
 	

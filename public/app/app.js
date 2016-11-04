@@ -3,7 +3,7 @@
 angular
 .module('app', ['ngMaterial','ui.router', 'main', 'firebase', 'ngMap', 'ngSanitize'])
 
-.factory("Auth", ["$firebaseAuth", function($firebaseAuth) {return $firebaseAuth();}])
+.factory('Auth', ["$firebaseAuth", function($firebaseAuth) {return $firebaseAuth();}])
 
 .config(function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
 
@@ -13,11 +13,16 @@ angular
 	$urlRouterProvider.otherwise('/login');
 
 	$stateProvider
-	.state('main', {
+	.state('home', {
 		url: '/home',
 		templateUrl: 'app/views/dashboard.html',
 		controller: 'map_controller',
-		controllerAs: 'mp'
+		controllerAs: 'mp',
+		resolve: {
+			currentAuth: ['Auth', function(Auth) {
+				return Auth.$requireSignIn()
+			}]
+		},
 	})
 	.state('login', {
 		url: '/login',
