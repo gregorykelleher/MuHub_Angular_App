@@ -32,6 +32,7 @@
     <script src="app/js/main.js"></script>
     <script src="/app/controllers/map_controller.js"></script>
     <script src="/app/controllers/login_controller.js"></script>
+    <script src="/app/controllers/dash_toolbar_controller.js"></script>
     <script src="app/app.js"></script>
 
     <!-- jquery -->
@@ -53,6 +54,8 @@
 <body ng-app="app">
     <div class="container">
         <div ui-view></div>
+        <div ui-view="dash_toolbar"></div>
+        <div ui-view="dashboard"></div>
     </div>
 </body>
 </html>

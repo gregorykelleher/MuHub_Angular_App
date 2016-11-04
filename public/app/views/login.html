@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html>
 <style>
   body {
     background: url(/app/imgs/back.jpg) no-repeat center center fixed;
@@ -9,40 +7,38 @@
     background-size: cover;
   }
 </style>
-<head>
-  <div layout="row" layout-align="center center" style="min-height: 600px">
-    <div layout="column" class="md-whiteframe-z3" style="min-width: 350px">
 
-      <md-content layout-padding ng-controller="lg.login">
-        <div class="md-icon-button" aria-label="Icon" style="text-align: center;">
-          <md-icon style="height: 100px; width: 100px; padding-bottom: 20px" md-svg-src="/app/imgs/account_circle.svg" aria-label="account_circle"></md-icon>
-        </div>
+<div layout="row" layout-align="center center" style="min-height: 600px">
+  <div layout="column" class="md-whiteframe-z3" style="min-width: 350px">
 
-        <div layout="column" layout-padding>
-          <md-input-container>
-            <label>Email Address</label>
-            <input type="email" ng-model="email"/>
-          </md-input-container>
+    <md-content layout-padding ng-controller="lg.login">
+      <div class="md-icon-button" aria-label="Icon" style="text-align: center;">
+        <md-icon style="height: 100px; width: 100px; padding-bottom: 20px" md-svg-src="/app/imgs/account_circle.svg" aria-label="account_circle"></md-icon>
+      </div>
 
-          <md-input-container>
-            <label>Password</label>
-            <input type="password" ng-model="password"/>
-          </md-input-container>
-        </div>
+      <div layout="column" layout-padding>
+        <md-input-container>
+          <label>Email Address</label>
+          <input type="email" ng-model="email"/>
+        </md-input-container>
 
-        <div layout="row">
-          <div flex="flex"></div>
-          <md-button ng-click="sign_in()" class="md-raised md-primary">Login</md-button>
-          <div flex="flex"></div>
-          <md-button ng-click="register()" class="md-raised">Register</md-button>
-          <div flex="flex"></div>
-        </div>
+        <md-input-container>
+          <label>Password</label>
+          <input type="password" ng-model="password"/>
+        </md-input-container>
+      </div>
 
-      </md-content>
-    </div>
+      <div layout="row">
+        <div flex="flex"></div>
+        <md-button ng-click="sign_in()" class="md-raised md-primary">Login</md-button>
+        <div flex="flex"></div>
+        <md-button ng-click="register()" class="md-raised">Register</md-button>
+        <div flex="flex"></div>
+      </div>
+
+    </md-content>
   </div>
-</head>
-<body></body>
+</div>
 
 
 

@@ -1,0 +1,32 @@
+<md-toolbar ng-controller="dt.toolbar">
+    <div class="md-toolbar-tools">
+        <h2><span class="md-flex"></span>Campus Locator</h2>
+
+        <span flex></span>
+        <md-button class="md-icon-button" aria-label="Icon">
+            <md-icon aria-label="message" class="material-icons">message</md-icon>
+        </md-button>
+
+        <md-menu md-position-mode="target-right target">
+            <md-button class="md-icon-button" aria-label="Icon" ng-click="$mdOpenMenu($event)">
+                <md-icon md-menu-origin aria-label="account_circle" class="material-icons">account_circle</md-icon>
+            </md-button>
+            <md-menu-content width="3">
+                <md-menu-item >
+                    <span md-menu-align-target=""> Hi {{ name }}!</span>
+                </md-menu-item>
+                <md-menu-divider></md-menu-divider>
+                <md-menu-item>
+                    <md-button ng-click="logout()">
+                    <md-icon md-menu-origin aria-label="exit_to_app" class="material-icons">exit_to_app</md-icon>
+                        <span md-menu-align-target="">Log out?</span>
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+
+        <md-button class="md-icon-button" aria-label="Icon">
+            <md-icon aria-label="more_vert" class="material-icons">more_vert</md-icon>
+        </md-button>
+    </div>
+</md-toolbar>

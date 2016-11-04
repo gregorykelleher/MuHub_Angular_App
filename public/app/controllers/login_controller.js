@@ -7,31 +7,51 @@
 		var self = this;
 		self.login = login;
 
-		function login($scope, Auth, Data, $mdToast, $state) {
+		function login($scope, Auth, Data, toast, $state) {
 
-			function toast(message) {
-				$mdToast.show(
-					$mdToast.simple()
-					.textContent(message)
-					.hideDelay(3000)
-					);
-			};
+			// func to separate email components
+			function GetEmailParts(email){
+				var objParts = {
+					user: null,
+					firstName: null,
+					LastName: null,
+					domain: null,
+					tld: null
+				};
+				email.replace( 
+					new RegExp("^([a-z\\d._%-]+)@((?:[a-z\\d-]+\\.)+)([a-z]{2,6})$", "i"),
+					function($0,$1,$2,$3) {
+						objParts.user = $1;  
+						if ($1.length > 1) {
+							$1 = $1.split(".");
+							for(var i = 0; i < $1.length; i++){
+								$1[i] = $1[i].substring(0,1).toUpperCase() + $1[i].substring(1,$1[i].length);
+							}
+							objParts.firstName = $1[0];
+							objParts.lastName = $1[1];
+						};
+						objParts.domain = $2;
+						objParts.tld = $3;
+					});
+				return(objParts);
+			}
 
 			$scope.register = function() {
 				$scope.message = null;
 				$scope.error = null;
 
-				var substring = "@mumail.ie";
 				var email = $scope.email;
+				email = GetEmailParts(email);
 
-				var username = email.substr(0, 16).replace('.',' ');
-				console.log(username);
+				first_name = email.firstName;
+				last_name = email.lastName;
 
+				// check if valid mumail email
 				function check_email(email) {
-					if(email == null) { 
+					if(email === null) { 
 						return false; 
 					}
-					else if(email.indexOf(substring) !== -1) {
+					else if(email.domain === "mumail.") {
 						return true;
 					} 
 					else return false;
@@ -41,25 +61,26 @@
 
 					Auth.$createUserWithEmailAndPassword($scope.email, $scope.password)
 					.then(function(firebaseUser) {
-
+						// add user data to firebase
 						Data
 						.child('users')
 						.child(firebaseUser.uid)
 						.set({
-							username: username,
+							first_name: first_name,
+							last_name: last_name,
 							email: firebaseUser.email,
 						})
 
-						toast('Sending email verification email now, check your inbox!');
+						toast.display('Sending email verification email now, check your inbox!');
 						firebaseUser.sendEmailVerification();
 
 					}).catch(function(error) {
 						$scope.error = error.message;
-						toast($scope.error);
+						toast.display($scope.error);
 					});
 				}
 				else if(check_email(email) == false) {
-					toast("Not a valid '@mumail' account");
+					toast.display("Not a valid '@mumail' account");
 				}
 			}
 
@@ -68,6 +89,7 @@
 				$scope.error = null;
 
 				function isEmail(email) {
+					// regex func to validate authentic email
 					var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 					return regex.test(email);
 				}
@@ -76,17 +98,17 @@
 					Auth.$signInWithEmailAndPassword($scope.email, $scope.password)
 					.then(function(firebaseUser) {
 						if (!firebaseUser.emailVerified) {
-							toast('Your email is not verified');
+							toast.display('Your email has not been verified yet');
 							$state.go('login');
 						} else { 
 							$state.go('home'); 
-							toast("You've been signed in");
+							toast.display("You've been signed in");
 						};
 					}).catch(function(error) {
-						toast(error.message);
+						toast.display(error.message);
 					});
 				}
-				else { toast("Not a valid email address"); };
+				else { toast.display("Not a valid email address"); };
 			}
 		};
 	}
