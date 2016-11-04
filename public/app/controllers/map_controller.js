@@ -7,7 +7,7 @@
 		var self = this;
 		self.map = map;
 
-		function map($scope, NgMap, $firebaseArray) {
+		function map($scope, NgMap, $firebaseArray, Data) {
 
 			// add map to scope
 			NgMap.getMap().then(function(map) {
@@ -15,8 +15,7 @@
 			});
 
 			// pull location data from firebase
-			var ref = firebase.database().ref().child("locations");
-			$scope.locations = $firebaseArray(ref);
+			$scope.locations = $firebaseArray(Data.child('locations'));
 
 			$scope.addMarker = function(item) {
 				

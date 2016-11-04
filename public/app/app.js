@@ -3,7 +3,8 @@
 angular
 .module('app', ['ngMaterial','ui.router', 'main', 'firebase', 'ngMap', 'ngSanitize'])
 
-.factory('Auth', ["$firebaseAuth", function($firebaseAuth) {return $firebaseAuth();}])
+.factory('Auth', ["$firebaseAuth", function($firebaseAuth) {return $firebaseAuth(); }])
+.factory("Data", function() { return firebase.database().ref(); })
 
 .config(function($stateProvider, $urlRouterProvider, $mdThemingProvider) {
 

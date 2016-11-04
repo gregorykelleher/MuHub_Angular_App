@@ -7,7 +7,7 @@
 		var self = this;
 		self.login = login;
 
-		function login($scope, Auth, $mdToast, $state) {
+		function login($scope, Auth, Data, $mdToast, $state) {
 
 			function toast(message) {
 				$mdToast.show(
@@ -24,6 +24,9 @@
 				var substring = "@mumail.ie";
 				var email = $scope.email;
 
+				var username = email.substr(0, 16).replace('.',' ');
+				console.log(username);
+
 				function check_email(email) {
 					if(email == null) { 
 						return false; 
@@ -32,14 +35,22 @@
 						return true;
 					} 
 					else return false;
-				}
+				};
 
 				if(check_email(email) == true) {
 
 					Auth.$createUserWithEmailAndPassword($scope.email, $scope.password)
 					.then(function(firebaseUser) {
 
-						toast('Sending email verification email now. Check your inbox!');
+						Data
+						.child('users')
+						.child(firebaseUser.uid)
+						.set({
+							username: username,
+							email: firebaseUser.email,
+						})
+
+						toast('Sending email verification email now, check your inbox!');
 						firebaseUser.sendEmailVerification();
 
 					}).catch(function(error) {
@@ -65,7 +76,7 @@
 					Auth.$signInWithEmailAndPassword($scope.email, $scope.password)
 					.then(function(firebaseUser) {
 						if (!firebaseUser.emailVerified) {
-							toast('Your email is not verified.');
+							toast('Your email is not verified');
 							$state.go('login');
 						} else { 
 							$state.go('home'); 
