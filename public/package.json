@@ -27,8 +27,9 @@
     "angular-aria": "^1.5.8",
     "angular-material": "^1.1.1",
     "angular-messages": "^1.5.8",
-    "angular-router": "0.0.2",
+    "angular-route": "^1.5.8",
     "angular-sanitize": "^1.5.8",
+    "angular-ui-router": "^0.3.1",
     "angularfire": "^2.0.2",
     "firebase": "^3.4.1",
     "ngmap": "^1.17.8"
