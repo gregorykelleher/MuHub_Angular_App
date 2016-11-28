@@ -1,6 +1,9 @@
 <md-tabs class="md-primary" md-stretch-tabs="always" md-no-ink md-dynamic-height md-autoselect flex>
+
+    <!-- *** MAP TAB *** -->
+
     <md-tab label="Map">
-        <md-content class="md-padding" flex ng-controller="mp.map">
+        <md-content class="md-padding" flex ng-controller="dc.map">
             <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:0.9">
 
                 <md-grid-tile md-colspan-gt-sm="2" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="1">
@@ -65,7 +68,9 @@
         </md-content>
     </md-tab>
 
-    <md-tab label="Dashboard">
+    <!-- *** STUDENT TAB *** -->
+
+    <md-tab label="Student">
         <md-content class="md-padding">
             <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:1">
 
@@ -78,10 +83,32 @@
                 </md-grid-tile>
 
                 <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="1" md-rowspan="1">
-                    <md-card layout-fill>
-                        <md-card-header layout-fill>
-                            <h2>Weather</h2>
-                        </md-card-header>
+                    <md-card layout-fill ng-controller="dc.weather">
+<!--                         <md-card-header layout-fill>
+                            <h2>{{ weather }}</h2>
+                        </md-card-header> -->
+                        <div layout="row" flex layout-align="space-around center">
+
+                            <div class="md-icon-button" aria-label="Icon" style="text-align: center;">
+                                <h4>{{ day_1 }}</h4>
+                                <md-icon style="height: 50px; width: 50px" md-svg-src="/app/imgs/sunny.svg" aria-label="cloudy"></md-icon>
+                                <h4>{{ temp_1 }}</h4>
+                            </div>
+
+                            <div class="md-icon-button" aria-label="Icon" style="text-align: center;">
+                                <h4>{{ day_2 }}</h4>
+                                <md-icon style="height: 50px; width: 50px" md-svg-src="/app/imgs/cloudy.svg" aria-label="cloudy"></md-icon>
+                                <h4>{{ temp_2 }}</h4>
+                            </div>
+
+                            <div class="md-icon-button" aria-label="Icon" style="text-align: center;">
+                                <h4> {{ day_3 }} </h4>
+                                <md-icon style="height: 50px; width: 50px" md-svg-src="/app/imgs/cloudy.svg" aria-label="cloudy"></md-icon>
+                                <h4>{{ temp_3 }}</h4>
+                            </div>
+
+                        </div>
+
                     </md-card>
                 </md-grid-tile>
 
