@@ -10,15 +10,35 @@
 
 		function weather($scope) {
 
-			$scope.day_1 = "Monday";
-			$scope.temp_1 = "18ºC";
+			$scope.day = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][(new Date()).getDay()];
 
-			$scope.day_2 = "Tuesday";
-			$scope.temp_2 = "10ºC";
+			$.getJSON("http://api.openweathermap.org/data/2.5/forecast?q=Maynooth,ie&units=metric&APPID=22d446acf6fed1e84d9fa2f7eb4a89ac").then(function(wd) {
+				$scope.location = (wd.city.name).toString();
+				$scope.weather = (wd.list[0].weather[0].main).toString();
+				$scope.temp = (wd.list[0].main.temp).toString() + "°C";
 
-			$scope.day_3 = "Wednesday";
-			$scope.temp_3 = "9ºC";
-
+				switch ($scope.weather) {
+					case "Rain":
+					$scope.img = "/app/imgs/rain.svg";
+					break;
+					case "Drizzle":
+					$scope.img = "/app/imgs/rain.svg";
+					break;
+					case "Clouds":
+					$scope.img = "/app/imgs/clouds.svg";
+					case "Clear":
+					$scope.img = "/app/imgs/clear.svg";
+					break;
+					case "Snow":
+					$scope.img = "/app/imgs/snow.svg";
+					break;
+					case "Thunderstorm":
+					$scope.img = "/app/imgs/thunderstorm.svg";
+					break;
+					default:
+					$scope.img = "/app/imgs/error.svg";
+				}
+			});
 		};
 
 		function map($scope, NgMap, $firebaseArray, Data) {
