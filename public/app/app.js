@@ -40,8 +40,8 @@ angular
 			},
 			'dashboard': {
 				templateUrl: 'app/views/dashboard.html',
-				controller: 'map_controller',
-				controllerAs: 'mp'
+				controller: 'dashboard_controller',
+				controllerAs: 'dc'
 			}
 		},
 		resolve: {
