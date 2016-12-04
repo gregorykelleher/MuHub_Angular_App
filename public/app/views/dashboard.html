@@ -31,14 +31,13 @@
                             </md-list>
                         </section>
 
-                        <div>
-                            <md-input-container md-no-float>
-                                <span layout="row" style="padding-right: 30px">
-                                    <md-icon aria-label="search" class="material-icons" style="padding-right: 30px">search</md-icon>
-                                    <input type="text" ng-model="search_text" placeholder="Search">
-                                </span>
-                            </md-input-container>
-                        </div>
+                        <md-input-container md-no-float>
+                            <span layout="row" style="padding-right: 30px">
+                                <md-icon aria-label="search" class="material-icons" style="padding-right: 30px">search</md-icon>
+                                <input type="text" ng-model="search_text" placeholder="Search">
+                            </span>
+                        </md-input-container>
+
 
                     </md-card>
                 </md-grid-tile>
@@ -75,7 +74,6 @@
             <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:0.9">
 
                 <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="2">
-
                     <md-card layout-fill flex>
 
                         <md-toolbar class="md-primary">
@@ -84,7 +82,7 @@
                             </div>
                         </md-toolbar>
 
-                        <!-- ***VIRTUAL REPEAT CONTAINER WORKING*** -->
+                        <!-- *** VIRTUAL REPEAT CONTAINER WORKING - NOT WITHIN TAB VIEW *** -->
 
      <!--                    <md-list flex>
                             <md-virtual-repeat-container layout-fill style="height:auto;" md-top-index="topIndex">
@@ -97,28 +95,21 @@
                             </md-virtual-repeat-container>
                         </md-list> -->
 
-                        <!-- *** REPEAT CONTAINER WORKING - TABS SCROLLING *** -->
+                        <!-- *** REPEAT CONTAINER WORKING - TABS SCROLLING BUG *** -->
 
                         <section flex layout="column">
                             <md-content flex class="md-padding" style="background-color:white">
                                 <md-tabs md-stretch-tabs="always" md-no-ink md-dynamic-height flex>
-                                    <md-tab label="Contacts">
 
+                                    <md-tab label="Contacts">
                                         <md-list flex>
-                                            <md-list-item ng-repeat="item in rooms">
+                                            <md-list-item ng-repeat="item in rooms | filter: search_text_chat">
                                                 <div layout="column">
                                                     <md-button class="md-primary">{{ item.first_name }} {{ item.last_name }}</md-button>
                                                 </div>
                                                 <md-divider></md-divider>
                                             </md-list-item>
                                         </md-list>
-
-                                    </md-tab>
-
-                                    <md-tab label="Chat">
-                                        <md-content class="md-padding" ng-controller="dc.map">
-                                            <h1 class="md-display-2">Chat</h1>
-                                        </md-content>
                                     </md-tab>
 
                                     <md-tab label="MuBot">
@@ -126,12 +117,19 @@
                                             <h1 class="md-display-2">MuBot</h1>
                                         </md-content>
                                     </md-tab>
+
                                 </md-content>
                             </md-tabs>
                         </section>
 
-                    </md-card>
+                        <md-input-container md-no-float class="md-block">
+                            <span layout="row" style="padding-right: 30px">
+                                <md-icon aria-label="search" class="material-icons" style="padding-right: 30px">search</md-icon>
+                                <input type="text" ng-model="search_text_chat" placeholder="Search">
+                            </span>
+                        </md-input-container>
 
+                    </md-card>
                 </md-grid-tile>
 
                 <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="1" md-rowspan="1">
@@ -148,7 +146,7 @@
 
                 <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="2" md-rowspan="1">
                     <md-card layout-fill>
-
+    
                         <md-toolbar layout="row" class="md-primary">
                             <div class="md-toolbar-tools">
                                 <span>Timetable</span>

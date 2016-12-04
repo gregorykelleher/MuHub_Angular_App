@@ -18,6 +18,7 @@
 				$scope.weather = (wd.list[0].weather[0].main).toString();
 				$scope.temp = (wd.list[0].main.temp).toString() + "°C";
 
+
 				switch ($scope.weather) {
 					case "Rain":
 					$scope.img = "/app/imgs/rain.svg";
@@ -27,6 +28,7 @@
 					break;
 					case "Clouds":
 					$scope.img = "/app/imgs/clouds.svg";
+					break;
 					case "Clear":
 					$scope.img = "/app/imgs/clear.svg";
 					break;
@@ -70,13 +72,6 @@
 			$scope.locations = $firebaseArray(Data.child('locations'));
 
 			$scope.rooms = $firebaseArray(Data.child('users'));
-			console.log($scope.rooms);
-
-			$scope.items = [];
-			
-			for (i = 0; i < 50; i++) { 
-				$scope.items.push(i);
-			}
 
 		}
 	}
