@@ -7,12 +7,13 @@
 		var self = this;
 		self.weather = weather;
 		self.map = map;
+		self.chat = chat;
 
 		function weather($scope) {
 
 			$scope.day = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][(new Date()).getDay()];
-
-			$.getJSON("http://api.openweathermap.org/data/2.5/forecast?q=Maynooth,ie&units=metric&APPID=22d446acf6fed1e84d9fa2f7eb4a89ac").then(function(wd) {
+			// http://api.openweathermap.org/data/2.5/forecast?q=Maynooth,ie&units=metric&APPID=22d446acf6fed1e84d9fa2f7eb4a89ac"
+			$.getJSON("http://api.openweathermap.org/data/2.5/forecast?q=Maynooth,ie&units=metric&APPID=b7c4cdf421b48042847185d7ace4855a").then(function(wd) {
 				$scope.location = (wd.city.name).toString();
 				$scope.weather = (wd.list[0].weather[0].main).toString();
 				$scope.temp = (wd.list[0].main.temp).toString() + "°C";
@@ -63,6 +64,21 @@
 
 			}
 		};
+
+		function chat($scope, $firebaseArray, Data, Auth, $timeout) {
+
+			$scope.locations = $firebaseArray(Data.child('locations'));
+
+			$scope.rooms = $firebaseArray(Data.child('users'));
+			console.log($scope.rooms);
+
+			$scope.items = [];
+			
+			for (i = 0; i < 50; i++) { 
+				$scope.items.push(i);
+			}
+
+		}
 	}
 	
 })();
