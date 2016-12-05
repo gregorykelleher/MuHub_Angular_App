@@ -86,8 +86,6 @@
 				});
 			});
 
-			console.log($scope.users);
-
 			var tabs = [{ title: 'Contacts', content: $scope.rooms}],
 			selected = null,
 			previous = null;
@@ -95,7 +93,9 @@
 			$scope.contacts=tabs[0];
 			$scope.selectedIndex = 0;
 
-			$scope.tab_state = false;
+			$scope.changeTabState = function(bool) {
+				$scope.tab_state = bool;
+			}
 
 			$scope.openChat = function(item) { 
 
@@ -106,11 +106,11 @@
 				if ($scope.tabs.length == 1) {
 					$scope.tabs.push({ title: $scope.receiver, disabled: false});
 				}
+				// check if tab is already open and if the tab has a different title
 				else if ($scope.tabs.length == 2 && $scope.tabs[1].title != $scope.receiver) {
 					$scope.tabs.splice(1);
 					$scope.tabs.push({ title: $scope.receiver, disabled: false});
 				}
-				$scope.tab_state = true;
 			};
 
 		}
