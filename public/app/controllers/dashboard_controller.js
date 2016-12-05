@@ -67,9 +67,26 @@
 			}
 		};
 
-		function chat($scope, $firebaseArray, Data, Auth, $timeout) {
+		function chat($scope, $firebaseArray, $firebaseObject, Data, Auth, $timeout) {
+
+			var uid = Auth.$getAuth().uid;
+			$scope.uid = Auth.$getAuth().uid;
 
 			$scope.rooms = $firebaseArray(Data.child('users'));
+			$scope.users = [];
+
+			// remove current user from list
+			$scope.rooms.$loaded()
+			.then(function(){
+				angular.forEach($scope.rooms, function(user, uid) {
+					uid = $scope.uid;
+					if (user.id != uid) {
+						$scope.users.push(user);
+					}
+				});
+			});
+
+			console.log($scope.users);
 
 			var tabs = [{ title: 'Contacts', content: $scope.rooms}],
 			selected = null,

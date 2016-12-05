@@ -88,7 +88,7 @@
 
                                     <md-tab label="{{ contacts.title }}">
                                         <md-list flex>
-                                            <md-list-item ng-repeat="item in rooms | filter: search_text_chat">
+                                            <md-list-item ng-repeat="item in users | filter: search_text_chat">
                                                 <div layout="column">
                                                     <md-button ng-click="openChat(item)" class="md-primary">{{ item.first_name }} {{ item.last_name }}</md-button>
                                                 </div>
