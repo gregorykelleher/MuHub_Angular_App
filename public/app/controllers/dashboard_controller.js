@@ -69,9 +69,21 @@
 
 		function chat($scope, $firebaseArray, Data, Auth, $timeout) {
 
-			$scope.locations = $firebaseArray(Data.child('locations'));
-
 			$scope.rooms = $firebaseArray(Data.child('users'));
+
+			var tabs = [
+			{ title: 'Contacts', content: $scope.rooms },
+			{ title: 'MuBot', content: "You can swipe left and right on a mobile device to change tabs."}
+			],
+			selected = null,
+			previous = null;
+			$scope.tabs = tabs;
+			$scope.selectedIndex = 0;
+
+			$scope.openChat = function(item) { 
+				$scope.receiver = item.id;
+
+			};
 
 		}
 	}

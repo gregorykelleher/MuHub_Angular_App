@@ -84,7 +84,7 @@
 
                         <!-- *** VIRTUAL REPEAT CONTAINER WORKING - NOT WITHIN TAB VIEW *** -->
 
-     <!--                    <md-list flex>
+<!--                         <md-list flex>
                             <md-virtual-repeat-container layout-fill style="height:auto;" md-top-index="topIndex">
                                 <md-list-item md-virtual-repeat="item in rooms" layout-fill>
                                     <div layout="column">
@@ -99,13 +99,34 @@
 
                         <section flex layout="column">
                             <md-content flex class="md-padding" style="background-color:white">
-                                <md-tabs md-stretch-tabs="always" md-no-ink md-dynamic-height flex>
+                                <md-tabs md-selected="selectedIndex" md-stretch-tabs="always" md-no-ink md-dynamic-height flex>
 
-                                    <md-tab label="Contacts">
+                                    <md-tab ng-repeat="tab in tabs" label="{{tab.title}}">
+
+                                        <section ng-show="tab.title == 'Contacts'">
+                                            <md-list flex>
+                                                <md-list-item ng-repeat="item in rooms | filter: search_text_chat">
+                                                    <div layout="column">
+                                                        <md-button ng-click="openChat(item)" class="md-primary">{{ item.first_name }} {{ item.last_name }}</md-button>
+                                                    </div>
+                                                    <md-divider></md-divider>
+                                                </md-list-item>
+                                            </md-list>
+                                        </section>
+
+                                        <section ng-show="tab.title == 'MuBot'">
+                                            <md-content class="md-padding">
+                                                <h1 class="md-display-2">MuBot</h1>
+                                            </md-content>
+                                        </section>
+
+                                    </md-tab>
+
+                                    <!-- <md-tab label="Contacts">
                                         <md-list flex>
                                             <md-list-item ng-repeat="item in rooms | filter: search_text_chat">
                                                 <div layout="column">
-                                                    <md-button class="md-primary">{{ item.first_name }} {{ item.last_name }}</md-button>
+                                                    <md-button ng-click="openChat(item)" class="md-primary">{{ item.first_name }} {{ item.last_name }}</md-button>
                                                 </div>
                                                 <md-divider></md-divider>
                                             </md-list-item>
@@ -116,10 +137,10 @@
                                         <md-content class="md-padding">
                                             <h1 class="md-display-2">MuBot</h1>
                                         </md-content>
-                                    </md-tab>
+                                    </md-tab> -->
 
-                                </md-content>
-                            </md-tabs>
+                                </md-tabs>
+                            </md-content>
                         </section>
 
                         <md-input-container md-no-float class="md-block">
@@ -146,7 +167,7 @@
 
                 <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="2" md-rowspan="1">
                     <md-card layout-fill>
-    
+
                         <md-toolbar layout="row" class="md-primary">
                             <div class="md-toolbar-tools">
                                 <span>Timetable</span>
