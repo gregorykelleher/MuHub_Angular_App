@@ -78,16 +78,14 @@
 			$scope.contacts=tabs[0];
 			$scope.selectedIndex = 0;
 
-			$scope.$watch('selectedIndex', function(current, old){
-				previous = selected;
-				selected = tabs[current];
-			});
+			$scope.tab_state = false;
 
 			$scope.openChat = function(item) { 
 
 				$scope.receiver = item.first_name;
 				$scope.receiver_id = item.id;
 
+				// dynamic user chat tab
 				if ($scope.tabs.length == 1) {
 					$scope.tabs.push({ title: $scope.receiver, disabled: false});
 				}
@@ -95,9 +93,7 @@
 					$scope.tabs.splice(1);
 					$scope.tabs.push({ title: $scope.receiver, disabled: false});
 				}
-				console.log($scope.tabs[1]);
-
-
+				$scope.tab_state = true;
 			};
 
 		}
