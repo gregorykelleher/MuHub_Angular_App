@@ -71,17 +71,32 @@
 
 			$scope.rooms = $firebaseArray(Data.child('users'));
 
-			var tabs = [
-			{ title: 'Contacts', content: $scope.rooms },
-			{ title: 'MuBot', content: "You can swipe left and right on a mobile device to change tabs."}
-			],
+			var tabs = [{ title: 'Contacts', content: $scope.rooms}],
 			selected = null,
 			previous = null;
 			$scope.tabs = tabs;
+			$scope.contacts=tabs[0];
 			$scope.selectedIndex = 0;
 
+			$scope.$watch('selectedIndex', function(current, old){
+				previous = selected;
+				selected = tabs[current];
+			});
+
 			$scope.openChat = function(item) { 
-				$scope.receiver = item.id;
+
+				$scope.receiver = item.first_name;
+				$scope.receiver_id = item.id;
+
+				if ($scope.tabs.length == 1) {
+					$scope.tabs.push({ title: $scope.receiver, disabled: false});
+				}
+				else if ($scope.tabs.length == 2 && $scope.tabs[1].title != $scope.receiver) {
+					$scope.tabs.splice(1);
+					$scope.tabs.push({ title: $scope.receiver, disabled: false});
+				}
+				console.log($scope.tabs[1]);
+
 
 			};
 
