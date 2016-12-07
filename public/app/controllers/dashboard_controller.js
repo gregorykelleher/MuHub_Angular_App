@@ -78,7 +78,7 @@
 			$scope.rooms.$loaded()
 			.then(function(){
 				angular.forEach($scope.rooms, function(user, uid) {
-					uid = $scope.uid;
+					uid = $scope.current_user_id;
 					if (user.id != uid) {
 						$scope.users.push(user);
 					}
