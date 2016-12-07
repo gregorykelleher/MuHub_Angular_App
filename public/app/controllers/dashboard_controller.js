@@ -67,14 +67,14 @@
 			}
 		};
 
-		function chat($scope, $firebaseArray, $firebaseObject, Data, Auth, $timeout) {
+		function chat($scope, $firebaseArray, Data, Auth) {
 
 			$scope.current_user_id = Auth.$getAuth().uid;
 
 			$scope.rooms = $firebaseArray(Data.child('users'));
 			$scope.users = [];
 
-			// remove current user from list
+			// remove current user from list; for display purposes only
 			$scope.rooms.$loaded()
 			.then(function(){
 				angular.forEach($scope.rooms, function(user, uid) {
@@ -92,80 +92,45 @@
 			$scope.contacts=tabs[0];
 			$scope.selectedIndex = 0;
 
-			$scope.changeTabState = function(bool) {
-				$scope.tab_state = bool;
-			}
+			$scope.changeTabState = function(bool) { $scope.tab_state = bool; }
 
 			$scope.openChat = function(item) { 
 
 				$scope.recipient = item.first_name;
 				$scope.recipient_id = item.id;
 
-				// console.log($scope.current_user_id);
-
 				// create rooms node in firebase
 				var rooms = $firebaseArray(Data.child("rooms"));
-
-				function createRoom(current_user_id, recipient_id) {
-					rooms.$add({
-						initiator: current_user_id,
-						recipient: recipient_id
-					});
-				}
-
-				function roomExists() {
-
-					rooms.$loaded().then(function(){
-						var bool = false;
-						Data.child('rooms').once('value', function(snapshot) {
-							snapshot.forEach(function(userSnapshot) {
-								$scope.data = userSnapshot.val();
-								if (($scope.current_user_id === $scope.data.initiator && $scope.recipient_id === $scope.data.recipient)) { 
-									bool = true;
-								}
-								else if (($scope.recipient_id === $scope.data.initiator) && ($scope.current_user_id === $scope.data.recipient)) {
-									bool = true;
-								}
-							});
-							if (bool === false) {
-								rooms.$add({
-									initiator: $scope.current_user_id,
-									recipient: $scope.recipient_id 
-								});
-								console.log("false");
-								console.log("added" + " " + $scope.recipient_id);
+				
+				// wait for firebase on promise
+				rooms.$loaded().then(function(){
+					var bool = false;
+					Data.child('rooms').once('value', function(snapshot) {
+						snapshot.forEach(function(userSnapshot) {
+							$scope.data = userSnapshot.val();
+							// FALSE IFF (current user OR recipient) is (initiator OR recipient)
+							if (($scope.current_user_id === $scope.data.initiator && $scope.recipient_id === $scope.data.recipient)) { 
+								bool = true;
 							}
-							else console.log("true");
+							else if (($scope.recipient_id === $scope.data.initiator) && ($scope.current_user_id === $scope.data.recipient)) {
+								bool = true;
+							}
 						});
+						// add room to firebase if conditions satisfied
+						if (!bool) {
+							rooms.$add({
+								initiator: $scope.current_user_id,
+								recipient: $scope.recipient_id 
+							});
+						}
 					});
+				}).catch(function(error) {
+					console.error("Error:", error);
+				});
 
-					// Data.child('rooms').once('value', function(snapshot) {
-					// 	snapshot.forEach(function(userSnapshot) {
-					// 		$scope.data = userSnapshot.val();
-					// 		if (($scope.current_user_id === $scope.data.initiator && $scope.recipient_id === $scope.data.recipient)) { 
-					// 			bool = true;
-					// 		}
-					// 		else if (($scope.recipient_id === $scope.data.initiator) && ($scope.current_user_id === $scope.data.recipient)) {
-					// 			bool = true;
-					// 		}
-					// 	});
-					// });
+				$scope.message;
+				console.log($scope.message);
 
-				}
-
-				if (roomExists() == false) {
-					createRoom($scope.current_user_id, $scope.recipient_id);
-				}
-
-
-				// OLD WORKING FUNCTION - DO NOT DELETE JUST YET
-				// check if a room containing the current user and receiving user already exists on firebase
-				// Data.child('rooms').orderByChild('usr_2').equalTo($scope.recipient_id).once('value', function(snapshot) {
-				// 	snapshot.forEach(function(userSnapshot) {
-				// 		$scope.data = userSnapshot.val();
-				// 		if ($scope.data.usr_1 == $scope.current_user_id) { bool = true; }
-				// 	});
-				// });
 
 				// dynamic user chat tab
 				if ($scope.tabs.length == 1) {
