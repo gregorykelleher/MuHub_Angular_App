@@ -98,45 +98,83 @@
 
 			$scope.openChat = function(item) { 
 
-				$scope.receiver = item.first_name;
-				$scope.receiver_id = item.id;
+				$scope.recipient = item.first_name;
+				$scope.recipient_id = item.id;
+
+				// console.log($scope.current_user_id);
 
 				// create rooms node in firebase
-				$scope.rooms = $firebaseArray(Data.child("rooms"));
+				var rooms = $firebaseArray(Data.child("rooms"));
 
-				function createRoom(current_user_id, receiver_id) {
-					$scope.rooms.$add({
-						usr_1: current_user_id,
-						usr_2: receiver_id
+				function createRoom(current_user_id, recipient_id) {
+					rooms.$add({
+						initiator: current_user_id,
+						recipient: recipient_id
 					});
 				}
 
 				function roomExists() {
 
-					var bool = false;
-
-					// check if a room containing the current user and receiving user already exists on firebase
-					Data.child('rooms').orderByChild('usr_2').equalTo($scope.receiver_id).once('value', function(snapshot) {
-						snapshot.forEach(function(userSnapshot) {
-							$scope.data = userSnapshot.val();
-							if ($scope.data.usr_1 == $scope.current_user_id) { bool = true; }
+					rooms.$loaded().then(function(){
+						var bool = false;
+						Data.child('rooms').once('value', function(snapshot) {
+							snapshot.forEach(function(userSnapshot) {
+								$scope.data = userSnapshot.val();
+								if (($scope.current_user_id === $scope.data.initiator && $scope.recipient_id === $scope.data.recipient)) { 
+									bool = true;
+								}
+								else if (($scope.recipient_id === $scope.data.initiator) && ($scope.current_user_id === $scope.data.recipient)) {
+									bool = true;
+								}
+							});
+							if (bool === false) {
+								rooms.$add({
+									initiator: $scope.current_user_id,
+									recipient: $scope.recipient_id 
+								});
+								console.log("false");
+								console.log("added" + " " + $scope.recipient_id);
+							}
+							else console.log("true");
 						});
 					});
-					return bool;
+
+					// Data.child('rooms').once('value', function(snapshot) {
+					// 	snapshot.forEach(function(userSnapshot) {
+					// 		$scope.data = userSnapshot.val();
+					// 		if (($scope.current_user_id === $scope.data.initiator && $scope.recipient_id === $scope.data.recipient)) { 
+					// 			bool = true;
+					// 		}
+					// 		else if (($scope.recipient_id === $scope.data.initiator) && ($scope.current_user_id === $scope.data.recipient)) {
+					// 			bool = true;
+					// 		}
+					// 	});
+					// });
+
 				}
 
 				if (roomExists() == false) {
-					createRoom($scope.current_user_id, $scope.receiver_id);
+					createRoom($scope.current_user_id, $scope.recipient_id);
 				}
+
+
+				// OLD WORKING FUNCTION - DO NOT DELETE JUST YET
+				// check if a room containing the current user and receiving user already exists on firebase
+				// Data.child('rooms').orderByChild('usr_2').equalTo($scope.recipient_id).once('value', function(snapshot) {
+				// 	snapshot.forEach(function(userSnapshot) {
+				// 		$scope.data = userSnapshot.val();
+				// 		if ($scope.data.usr_1 == $scope.current_user_id) { bool = true; }
+				// 	});
+				// });
 
 				// dynamic user chat tab
 				if ($scope.tabs.length == 1) {
-					$scope.tabs.push({ title: $scope.receiver, disabled: false});
+					$scope.tabs.push({ title: $scope.recipient, disabled: false});
 				}
 				// check if tab is already open and if the tab has a different title
-				else if ($scope.tabs.length == 2 && $scope.tabs[1].title != $scope.receiver) {
+				else if ($scope.tabs.length == 2 && $scope.tabs[1].title != $scope.recipient) {
 					$scope.tabs.splice(1);
-					$scope.tabs.push({ title: $scope.receiver, disabled: false});
+					$scope.tabs.push({ title: $scope.recipient, disabled: false});
 				}
 			};
 
