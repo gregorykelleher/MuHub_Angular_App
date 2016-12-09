@@ -7,6 +7,8 @@
 		var self = this;
 		self.weather = weather;
 		self.map = map;
+		self.chat = chat;
+		self.timetable;
 
 		function weather($scope) {
 
@@ -93,6 +95,84 @@
 
 			}
 		};
+
+		function chat($scope, $firebaseArray, Data, Auth) {
+
+			$scope.current_user_id = Auth.$getAuth().uid;
+
+			$scope.rooms = $firebaseArray(Data.child('users'));
+			$scope.users = [];
+
+			// remove current user from list; for display purposes only
+			$scope.rooms.$loaded()
+			.then(function(){
+				angular.forEach($scope.rooms, function(user, uid) {
+					uid = $scope.current_user_id;
+					if (user.id != uid) {
+						$scope.users.push(user);
+					}
+				});
+			});
+
+			var tabs = [{ title: 'Contacts', content: $scope.rooms}],
+			selected = null,
+			previous = null;
+			$scope.tabs = tabs;
+			$scope.contacts=tabs[0];
+			$scope.selectedIndex = 0;
+
+			$scope.changeTabState = function(bool) { $scope.tab_state = bool; }
+
+			$scope.openChat = function(item) { 
+
+				$scope.recipient = item.first_name;
+				$scope.recipient_id = item.id;
+
+				// create rooms node in firebase
+				var rooms = $firebaseArray(Data.child("rooms"));
+				
+				// wait for firebase on promise
+				rooms.$loaded().then(function(){
+					var bool = false;
+					Data.child('rooms').once('value', function(snapshot) {
+						snapshot.forEach(function(userSnapshot) {
+							$scope.data = userSnapshot.val();
+							// FALSE IFF (current user OR recipient) is (initiator OR recipient)
+							if (($scope.current_user_id === $scope.data.initiator && $scope.recipient_id === $scope.data.recipient)) { 
+								bool = true;
+							}
+							else if (($scope.recipient_id === $scope.data.initiator) && ($scope.current_user_id === $scope.data.recipient)) {
+								bool = true;
+							}
+						});
+						// add room to firebase if conditions satisfied
+						if (!bool) {
+							rooms.$add({
+								initiator: $scope.current_user_id,
+								recipient: $scope.recipient_id 
+							});
+						}
+					});
+				}).catch(function(error) {
+					console.error("Error:", error);
+				});
+
+				$scope.message;
+				console.log($scope.message);
+
+
+				// dynamic user chat tab
+				if ($scope.tabs.length == 1) {
+					$scope.tabs.push({ title: $scope.recipient, disabled: false});
+				}
+				// check if tab is already open and if the tab has a different title
+				else if ($scope.tabs.length == 2 && $scope.tabs[1].title != $scope.recipient) {
+					$scope.tabs.splice(1);
+					$scope.tabs.push({ title: $scope.recipient, disabled: false});
+				}
+			};
+
+		}
 	}
 	
 })();

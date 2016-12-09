@@ -68,6 +68,7 @@
 						.set({
 							first_name: first_name,
 							last_name: last_name,
+							id: firebaseUser.uid,
 							email: firebaseUser.email,
 						})
 
