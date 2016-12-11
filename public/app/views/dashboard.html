@@ -118,14 +118,43 @@
                             </md-input-container>
                         </section>
 
+                        <style>
+                            #submit_btn {
+                                margin: 0px; 
+                                min-width: 1%; 
+                                line-height: 0px; 
+                                min-height: auto;
+                            }
+                        </style>
+
+<!--                         <section ng-show="tab_state">
+                            <form name="form" ng-submit="submit(form)" novalidate>
+                                <md-input-container md-no-float class="md-block">
+                                    <span layout="row" style="padding: 0 30px 0 30px">
+                                        <md-button ng-disabled="form.$invalid" id="submit_btn" aria-label="submit" ng-click="submit(form)">
+                                            <md-icon type="submit" class="material-icons">send</md-icon>
+                                        </md-button>
+                                        <div style="min-width: 30px"></div>
+                                        <input ng-model="message" type="text" placeholder="Send" required>
+                                    </span>
+                                </md-input-container>
+                            </form>
+                        </section> -->
+
                         <section ng-show="tab_state">
-                            <md-input-container md-no-float class="md-block">
-                                <span layout="row" style="padding-right: 30px">
-                                    <md-icon aria-label="Send" class="material-icons" style="padding-right: 30px">send</md-icon>
-                                    <input type="text" placeholder="Send">
-                                </span>
-                            </md-input-container>
+                            <form ng-submit="submit(form)" name="form">
+                                <md-input-container md-no-float class="md-block">
+                                    <span layout="row" style="padding: 0 30px 0 30px">
+                                        <md-button ng-disabled="form.$invalid" ng-click="submit(form)" id="submit_btn" aria-label="submit">
+                                            <md-icon type="submit" class="material-icons">send</md-icon>
+                                        </md-button>
+                                        <div style="min-width: 30px"></div>
+                                        <input ng-model="message.text" name="message.text" type="text" placeholder="Send" required>
+                                    </span>
+                                </md-input-container>
+                            </form>
                         </section>
+
 
                     </md-card>
                 </md-grid-tile>
@@ -144,13 +173,11 @@
 
                 <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="2" md-rowspan="1">
                     <md-card layout-fill>
-
                         <md-toolbar layout="row" class="md-primary">
                             <div class="md-toolbar-tools">
                                 <span>Timetable</span>
                             </div>
-                        </md-toolbar>
-
+                            </md-toolbar>
                     </md-card>
                 </md-grid-tile>
 

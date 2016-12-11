@@ -120,6 +120,7 @@
 			$scope.tabs = tabs;
 			$scope.contacts=tabs[0];
 			$scope.selectedIndex = 0;
+			$scope.tab_state = false;
 
 			$scope.changeTabState = function(bool) { $scope.tab_state = bool; }
 
@@ -155,11 +156,20 @@
 					});
 				}).catch(function(error) {
 					console.error("Error:", error);
-				});
+				});	
 
-				$scope.message;
-				console.log($scope.message);
+				$scope.message = {
+					text: null
+				};
 
+				$scope.submit = function(form) {
+					if ($scope.message.text) {
+						console.log($scope.message.text);
+						$scope.message.text = '';
+						form.$setPristine();
+						form.$setUntouched();
+					}
+				};
 
 				// dynamic user chat tab
 				if ($scope.tabs.length == 1) {
