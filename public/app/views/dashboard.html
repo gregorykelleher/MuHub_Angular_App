@@ -69,7 +69,7 @@
     <!-- *** STUDENT TAB *** -->
 
     <md-tab label="Student">
-        <md-content class="md-padding" flex ng-controller="dc.chat">
+        <md-content class="md-padding" flex ng-controller="dc.messaging">
             <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:0.9">
 
                 <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="2">
@@ -89,7 +89,7 @@
                                         <md-list flex>
                                             <md-list-item ng-repeat="item in users | filter: search_text_chat">
                                                 <div layout="column">
-                                                    <md-button ng-click="openChat(item)" class="md-primary">{{ item.first_name }} {{ item.last_name }}</md-button>
+                                                    <md-button ng-click="openMessaging(item)" class="md-primary">{{ item.first_name }} {{ item.last_name }}</md-button>
                                                 </div>
                                                 <md-divider></md-divider>
                                             </md-list-item>
@@ -98,12 +98,6 @@
                                     
                                     <!-- User Tab -->
                                     <md-tab ng-repeat="tab in tabs" md-on-select="changeTabState(true)" md-active="tab_state=true" label="{{ tab.title }}" ng-if="tab.title!='Contacts'"></md-tab>
-
-<!--                                     <md-tab label="MuBot">
-                                        <md-content class="md-padding">
-                                            <h1 class="md-display-2">MuBot</h1>
-                                        </md-content>
-                                    </md-tab> -->
 
                                 </md-tabs>
                             </md-content>
@@ -127,20 +121,6 @@
                             }
                         </style>
 
-<!--                         <section ng-show="tab_state">
-                            <form name="form" ng-submit="submit(form)" novalidate>
-                                <md-input-container md-no-float class="md-block">
-                                    <span layout="row" style="padding: 0 30px 0 30px">
-                                        <md-button ng-disabled="form.$invalid" id="submit_btn" aria-label="submit" ng-click="submit(form)">
-                                            <md-icon type="submit" class="material-icons">send</md-icon>
-                                        </md-button>
-                                        <div style="min-width: 30px"></div>
-                                        <input ng-model="message" type="text" placeholder="Send" required>
-                                    </span>
-                                </md-input-container>
-                            </form>
-                        </section> -->
-
                         <section ng-show="tab_state">
                             <form ng-submit="submit(form)" name="form">
                                 <md-input-container md-no-float class="md-block">
@@ -154,7 +134,6 @@
                                 </md-input-container>
                             </form>
                         </section>
-
 
                     </md-card>
                 </md-grid-tile>

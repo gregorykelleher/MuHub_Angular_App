@@ -7,8 +7,7 @@
 		var self = this;
 		self.weather = weather;
 		self.map = map;
-		self.chat = chat;
-		self.timetable;
+		self.messaging = messaging;
 
 		function weather($scope) {
 
@@ -73,6 +72,7 @@
 			});
 		};
 
+
 		function map($scope, NgMap, $firebaseArray, Data) {
 
 			// add map to scope
@@ -96,7 +96,7 @@
 			}
 		};
 
-		function chat($scope, $firebaseArray, Data, Auth) {
+		function messaging($scope, $firebaseArray, Data, Auth) {
 
 			$scope.current_user_id = Auth.$getAuth().uid;
 
@@ -124,7 +124,7 @@
 
 			$scope.changeTabState = function(bool) { $scope.tab_state = bool; }
 
-			$scope.openChat = function(item) { 
+			$scope.openMessaging = function(item) { 
 
 				$scope.recipient = item.first_name;
 				$scope.recipient_id = item.id;
@@ -150,7 +150,11 @@
 						if (!bool) {
 							rooms.$add({
 								initiator: $scope.current_user_id,
-								recipient: $scope.recipient_id 
+								recipient: $scope.recipient_id,
+								messages: 0
+							}).then(function(ref) {
+								// add room_id to scope for indexing
+								$scope.room_id = ref.key;
 							});
 						}
 					});
@@ -158,16 +162,32 @@
 					console.error("Error:", error);
 				});	
 
-				$scope.message = {
-					text: null
-				};
+				$scope.message = { text: null };
 
 				$scope.submit = function(form) {
 					if ($scope.message.text) {
-						console.log($scope.message.text);
+
+						Data.child('rooms').limitToLast(1).once('value', function(snapshot) {
+
+							var message_data = {
+								sender: $scope.current_user_id,
+								room_id: $scope.room_id,
+								body: $scope.message.text
+							};
+
+							var newMessageKey = Data.child('rooms').push().key;
+
+							var updates = {};
+							updates['/rooms/' + $scope.room_id + '/' + '/messages/' + newMessageKey] = message_data;
+
+							return Data.update(updates);
+
+						});
+
 						$scope.message.text = '';
 						form.$setPristine();
 						form.$setUntouched();
+
 					}
 				};
 
