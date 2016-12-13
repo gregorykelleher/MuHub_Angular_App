@@ -222,41 +222,48 @@
 
 				messages.$loaded()
 				.then(function() {
-					Data.child('room_metadata').once('value', function(data) {
+					Data.child('users').child($scope.current_user_id).once('value', function(item) {
+						var item = item.val();
+						$scope.current_user_name = item.first_name + " " + item.last_name;
 
-						data.forEach(function(itemSnapshot) {
-							$scope.message_objs.push({message :itemSnapshot.val().message, sender: itemSnapshot.val().sender});
-						});
+						Data.child('room_metadata').once('value', function(data) {
+							data.forEach(function(itemSnapshot) {
+								if (($scope.current_user_name == itemSnapshot.val().sender) && ($scope.recipient == itemSnapshot.val().receiver)) {
+									$scope.message_objs.push({message :itemSnapshot.val().message, sender: itemSnapshot.val().sender});
+								}
+								else if (($scope.recipient === itemSnapshot.val().sender) && ($scope.current_user_name === itemSnapshot.val().receiver)) {
+									$scope.message_objs.push({message :itemSnapshot.val().message, sender: itemSnapshot.val().sender});
+								}
+							});
 
-					}).catch(function(error) {
-						console.error("Error:", error);
-					});	
+						}).catch(function(error) {
+							console.error("Error:", error);
+						});	
+					});
 				});
 
-				console.log($scope.message_objs);
+				// console.log($scope.message_objs);
 
 				// Data.child('room_metadata').endAt().limitToLast(1).on('child_added', function(snapshot) {
 				// 	$scope.message_objs.push(snapshot.val().message);
 				// });
 
 				// console.log($scope.message_objs);
-
-
 				// console.log($scope.message_objs);
 
 				// messages.$loaded()
 				// .then(function() {
 				// 	Data.child('room_metadata').on('child_added', function(data) {
-				// 		Data.child('users').child($scope.current_user_id).once('value', function(item) {
-				// 			var item = item.val();
-				// 			$scope.current_user_name = item.first_name + " " + item.last_name;
+						// Data.child('users').child($scope.current_user_id).once('value', function(item) {
+							// var item = item.val();
+							// $scope.current_user_name = item.first_name + " " + item.last_name;
 
-				// 			if (($scope.current_user_name == data.val().sender) && ($scope.recipient == data.val().receiver)) { 
-				// 				$scope.message_objs.push(data.val());
-				// 			}
-				// 			else if (($scope.recipient === data.val().sender) && ($scope.current_user_name === data.val().receiver)) {
-				// 				$scope.message_objs.push(data.val());
-				// 			}
+							// if (($scope.current_user_name == data.val().sender) && ($scope.recipient == data.val().receiver)) { 
+							// 	$scope.message_objs.push(data.val());
+							// }
+							// else if (($scope.recipient === data.val().sender) && ($scope.current_user_name === data.val().receiver)) {
+							// 	$scope.message_objs.push(data.val());
+							// }
 				// 		});
 				// 	});
 				// }).catch(function(error) {
