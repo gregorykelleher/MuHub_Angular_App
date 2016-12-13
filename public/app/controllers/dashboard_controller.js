@@ -15,62 +15,44 @@
 
 			$scope.day = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][(new Date()).getDay()];
 
-			$.getJSON("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20%3D%20561669%20and%20u%3D%27c%27&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys").then(function(wd) {
-				$scope.location = "Maynooth";
-				$scope.weather = (wd.query.results.channel.item.condition.code).toString();
-				$scope.temp = (wd.query.results.channel.item.condition.temp).toString().split('.')[0] + "°C";
+			$.getJSON("https://api.apixu.com/v1/current.json?key=c79b2673ab674949b21164927161312&q=Maynooth").then(function(wd) {
+				$scope.location = (wd.location.name);
+				$scope.weather = (wd.current.condition.code).toString();
+				$scope.temp = (wd.current.temp_c).toString().split('.')[0] + "°C";
 
-				switch ($scope.weather) {
-					case "10":
-					case "11":
-					case "12":
-					$scope.img = "/app/imgs/rain.svg";
-					break;
-					case "8":
-					case "9":
-					$scope.img = "/app/imgs/rain.svg";
-					break;
-					case "26":
-					case "27":
-					case "28":
-					case "29":
-					case "30":
-					case "20":
-					$scope.img = "/app/imgs/clouds.svg";
-					break;
-					case "31":
-					case "32":
-					case "33":
-					case "34":
-					case "36":
-					case "27":
-					$scope.img = "/app/imgs/clear.svg";
-					break;
-					case "5":
-					case "6":
-					case "7":
-					case "13":
-					case "14":
-					case "15":
-					case "16":
-					case "17":
-					case "41":
-					case "42":
-					case "43":
-					case "46":
-					$scope.img = "/app/imgs/snow.svg";
-					break;
-					case "3":
-					case "4":
-					case "37":
-					case "38":
-					case "39":
-					case "40":
-					$scope.img = "/app/imgs/thunderstorm.svg";
-					break;
-					default:
-					$scope.img = "/app/imgs/error.svg";
+				function getWeather(code) {
+					var img;
+					function isClear() {
+						return img = "/app/imgs/clear.svg";
+					}
+					function isClouds() {
+						return img = "/app/imgs/clouds.svg";
+					}
+					function isRain() {
+						return img = "/app/imgs/rain.svg";
+					}
+					function isSnow() {
+						return img = "/app/imgs/snow.svg";
+					}
+					function isThunder() {
+						return img = "/app/imgs/thunderstorm.svg";
+					}
+					var codes = {
+						// clear
+						'1000': isClear,
+						// clouds
+						'1003': isClouds, '1006': isClouds, '1009': isClouds,
+						// rain
+						'1063': isRain, '1150': isRain, '1153': isRain, '1180': isRain, '1183': isRain, '1186': isRain, 
+						'1189': isRain, '1192': isRain, '1195': isRain, '1240': isRain, '1243': isRain, '1246': isRain, 
+						// snow
+						'1066': isSnow, '1069': isSnow, '1114': isSnow,
+						// thunderstorm
+						'1087': isThunder, '1276': isThunder
+					};
+					return codes[code]();
 				}
+				$scope.img = getWeather($scope.weather);
 			});
 		};
 
