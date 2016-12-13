@@ -127,13 +127,6 @@
 			$scope.contacts=tabs[0];
 			$scope.tab_state = false;
 
-			// var messages = $firebaseObject(Data.child('room_metadata'));
-			// $scope.message_objs = [];
-
-			// Data.child('room_metadata').endAt().limitToLast(1).on('child_added', function(snapshot) {
-			// 	$scope.message_objs.push(snapshot.val().message);
-			// });
-
 			// change tab state for ng-show in DOM
 			$scope.changeTabState = function(bool) { $scope.tab_state = bool; }
 
@@ -188,8 +181,8 @@
 									receiver: $scope.recipient,
 									message: message
 								}).then(function(ref) {
+									// push latest message to message_objs
 									$scope.message_objs.push({message :message, sender: $scope.current_user_name});
-									// console.log($scope.message_objs);
 								})
 							});
 						});
@@ -206,14 +199,11 @@
 				$scope.submit = function(form) {
 					if ($scope.message.text) {
 
-						// $scope.message_objs.push($scope.message.text);
-
 						sendMessage($scope.message.text);
 
 						$scope.message.text = '';
 						form.$setPristine();
 						form.$setUntouched();
-
 					}
 				};
 
@@ -223,9 +213,9 @@
 				messages.$loaded()
 				.then(function() {
 					Data.child('users').child($scope.current_user_id).once('value', function(item) {
-						var item = item.val();
-						$scope.current_user_name = item.first_name + " " + item.last_name;
+						$scope.current_user_name = item.val().first_name + " " + item.val().last_name;
 
+						// only display messages with current_user and recipient members
 						Data.child('room_metadata').once('value', function(data) {
 							data.forEach(function(itemSnapshot) {
 								if (($scope.current_user_name == itemSnapshot.val().sender) && ($scope.recipient == itemSnapshot.val().receiver)) {
@@ -241,34 +231,6 @@
 						});	
 					});
 				});
-
-				// console.log($scope.message_objs);
-
-				// Data.child('room_metadata').endAt().limitToLast(1).on('child_added', function(snapshot) {
-				// 	$scope.message_objs.push(snapshot.val().message);
-				// });
-
-				// console.log($scope.message_objs);
-				// console.log($scope.message_objs);
-
-				// messages.$loaded()
-				// .then(function() {
-				// 	Data.child('room_metadata').on('child_added', function(data) {
-						// Data.child('users').child($scope.current_user_id).once('value', function(item) {
-							// var item = item.val();
-							// $scope.current_user_name = item.first_name + " " + item.last_name;
-
-							// if (($scope.current_user_name == data.val().sender) && ($scope.recipient == data.val().receiver)) { 
-							// 	$scope.message_objs.push(data.val());
-							// }
-							// else if (($scope.recipient === data.val().sender) && ($scope.current_user_name === data.val().receiver)) {
-							// 	$scope.message_objs.push(data.val());
-							// }
-				// 		});
-				// 	});
-				// }).catch(function(error) {
-				// 	console.error("Error:", error);
-				// });	
 				
 				// dynamic user chat tab
 				if ($scope.tabs.length == 1) {
