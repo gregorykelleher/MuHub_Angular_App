@@ -105,13 +105,13 @@
 
 			$scope.current_user_id = Auth.$getAuth().uid;
 
-			$scope.rooms = $firebaseArray(Data.child('users'));
+			var room_list = $firebaseArray(Data.child('users'));
 			$scope.users = [];
 
 			// remove current user from list; for display purposes only
-			$scope.rooms.$loaded()
+			room_list.$loaded()
 			.then(function(){
-				angular.forEach($scope.rooms, function(user, uid) {
+				angular.forEach(room_list, function(user, uid) {
 					uid = $scope.current_user_id;
 					if (user.id != uid) {
 						$scope.users.push(user);
@@ -120,13 +120,19 @@
 			});
 
 			// set up tab configurations
-			var tabs = [{ title: 'Contacts', content: $scope.rooms}],
+			var tabs = [{ title: 'Contacts', content: $scope.users}];
 			selected = null,
 			previous = null;
 			$scope.tabs = tabs;
 			$scope.contacts=tabs[0];
-			$scope.selectedIndex = 0;
 			$scope.tab_state = false;
+
+			// var messages = $firebaseObject(Data.child('room_metadata'));
+			// $scope.message_objs = [];
+
+			// Data.child('room_metadata').endAt().limitToLast(1).on('child_added', function(snapshot) {
+			// 	$scope.message_objs.push(snapshot.val().message);
+			// });
 
 			// change tab state for ng-show in DOM
 			$scope.changeTabState = function(bool) { $scope.tab_state = bool; }
@@ -139,21 +145,18 @@
 
 				// create rooms node in firebase
 				var rooms = $firebaseArray(Data.child("rooms"));
-
-				// create room_metadata in firebase
-				var room_metadata = $firebaseArray(Data.child("room_metadata"));
 				
 				// check whether room previously created; if not, create
 				rooms.$loaded().then(function(){
 					var bool = false;
 					Data.child('rooms').once('value', function(snapshot) {
 						snapshot.forEach(function(itemSnapshot) {
-							$scope.data = itemSnapshot.val();
+							var data = itemSnapshot.val();
 							// FALSE IFF (current user OR recipient) is (initiator OR recipient)
-							if (($scope.current_user_id === $scope.data.initiator && $scope.recipient_id === $scope.data.recipient)) { 
+							if (($scope.current_user_id == data.initiator && $scope.recipient_id == data.recipient)) { 
 								bool = true;
 							}
-							else if (($scope.recipient_id === $scope.data.initiator) && ($scope.current_user_id === $scope.data.recipient)) {
+							else if (($scope.recipient_id == data.initiator) && ($scope.current_user_id == data.recipient)) {
 								bool = true;
 							}
 						});
@@ -162,9 +165,6 @@
 							rooms.$add({
 								initiator: $scope.current_user_id,
 								recipient: $scope.recipient_id
-							}).then(function(ref) {
-								// add room_id to scope - note available for initiator
-								$scope.room_id = ref.key;
 							});
 						}
 					});
@@ -174,22 +174,23 @@
 
 				function sendMessage(message) {
 
+					// create room_metadata in firebase
+					var room_metadata = $firebaseArray(Data.child("room_metadata"));
+
 					room_metadata.$loaded().then(function(){
 
 						Data.child('users').child($scope.current_user_id).once('value', function(snap) {
-							var item = snap.val();
-							$scope.current_user_name = item.first_name + " " + item.last_name;
+							$scope.current_user_name = snap.val().first_name + " " + snap.val().last_name;
 
-							Data.once('value', function(snapshot) {
-
+							Data.once('value', function() {
 								room_metadata.$add({
 									sender: $scope.current_user_name,
 									receiver: $scope.recipient,
 									message: message
-
 								})
 							});
 						});
+
 					}).catch(function(error) {
 						console.error("Error:", error);
 					});	
@@ -201,6 +202,8 @@
 				// validation done in DOM - submit() posts message to firebase & clears input
 				$scope.submit = function(form) {
 					if ($scope.message.text) {
+
+						$scope.message_objs.push($scope.message.text);
 
 						sendMessage($scope.message.text);
 
@@ -216,25 +219,44 @@
 
 				messages.$loaded()
 				.then(function() {
-					Data.child('room_metadata').on('child_added', function(data) {
-						Data.child('users').child($scope.current_user_id).once('value', function(snap) {
-							var item = snap.val();
-							$scope.current_user_name = item.first_name + " " + item.last_name;
+					Data.child('room_metadata').once('value', function(data) {
 
-							if (($scope.current_user_name == data.val().sender) && ($scope.recipient == data.val().receiver)) { 
-								$scope.message_objs.push(data.val());
-							}
-							else if (($scope.recipient === data.val().sender) && ($scope.current_user_name === data.val().receiver)) {
-								$scope.message_objs.push(data.val());
-							}
+						data.forEach(function(itemSnapshot) {
+							$scope.message_objs.push(itemSnapshot.val().message);
 						});
-					});
-				}).catch(function(error) {
-					console.error("Error:", error);
-				});	
 
-				console.log($scope.message_objs);
+					}).catch(function(error) {
+						console.error("Error:", error);
+					});	
+				});
 
+				// Data.child('room_metadata').endAt().limitToLast(1).on('child_added', function(snapshot) {
+				// 	$scope.message_objs.push(snapshot.val().message);
+				// });
+
+				// console.log($scope.message_objs);
+
+
+				// console.log($scope.message_objs);
+
+				// messages.$loaded()
+				// .then(function() {
+				// 	Data.child('room_metadata').on('child_added', function(data) {
+				// 		Data.child('users').child($scope.current_user_id).once('value', function(item) {
+				// 			var item = item.val();
+				// 			$scope.current_user_name = item.first_name + " " + item.last_name;
+
+				// 			if (($scope.current_user_name == data.val().sender) && ($scope.recipient == data.val().receiver)) { 
+				// 				$scope.message_objs.push(data.val());
+				// 			}
+				// 			else if (($scope.recipient === data.val().sender) && ($scope.current_user_name === data.val().receiver)) {
+				// 				$scope.message_objs.push(data.val());
+				// 			}
+				// 		});
+				// 	});
+				// }).catch(function(error) {
+				// 	console.error("Error:", error);
+				// });	
 				
 				// dynamic user chat tab
 				if ($scope.tabs.length == 1) {
