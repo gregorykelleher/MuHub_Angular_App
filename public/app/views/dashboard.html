@@ -31,14 +31,12 @@
                             </md-list>
                         </section>
 
-                        <div>
-                            <md-input-container md-no-float>
-                                <span layout="row" style="padding-right: 30px">
-                                    <md-icon aria-label="search" class="material-icons" style="padding-right: 30px">search</md-icon>
-                                    <input type="text" ng-model="search_text" placeholder="Search">
-                                </span>
-                            </md-input-container>
-                        </div>
+                        <md-input-container md-no-float>
+                            <span layout="row" style="padding-right: 30px">
+                                <md-icon aria-label="search" class="material-icons" style="padding-right: 30px">search</md-icon>
+                                <input type="text" ng-model="search_text" placeholder="Search">
+                            </span>
+                        </md-input-container>
 
                     </md-card>
                 </md-grid-tile>
@@ -71,14 +69,82 @@
     <!-- *** STUDENT TAB *** -->
 
     <md-tab label="Student">
-        <md-content class="md-padding" flex">
+        <md-content class="md-padding" flex ng-controller="dc.messaging">
             <md-grid-list md-cols-gt-sm="6" md-cols="1" md-gutter="2em" md-row-height="1:0.9">
 
                 <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="3" md-rowspan="2">
-                    <md-card layout-fill>
-                        <md-card-header>
-                            <h2>Messages</h2>
-                        </md-card-header>
+                    <md-card layout-fill flex>
+
+                        <md-toolbar class="md-primary">
+                            <div class="md-toolbar-tools">
+                                <span>Messaging</span>
+                            </div>
+                        </md-toolbar>
+
+                        <section flex layout="column">
+                            <md-content flex class="md-padding" style="background-color:white">
+                                <md-tabs md-selected="selectedIndex" md-stretch-tabs="always" md-no-ink md-dynamic-height flex>
+
+                                    <md-tab label="{{ contacts.title }}" md-on-select="changeTabState(false)">
+                                        <md-list flex>
+                                            <md-list-item ng-repeat="item in users | filter: search_text_chat">
+                                                <div layout="column">
+                                                    <md-button ng-click="openMessaging(item)" class="md-primary">{{ item.first_name }} {{ item.last_name }}</md-button>
+                                                </div>
+                                                <md-divider></md-divider>
+                                            </md-list-item>
+                                        </md-list>
+                                    </md-tab>
+                                    
+                                    <!-- User Tab -->
+                                    <md-tab ng-repeat="tab in tabs" md-on-select="changeTabState(true)" md-active="tab_state=true" label="{{ tab.title }}" ng-if="tab.title!='Contacts'">
+                                        <md-list flex>
+                                            <md-list-item ng-repeat="item in message_objs" class="md-2-line">
+                                                <div class="md-list-item-text">
+                                                    <h3>{{ item.message }}</h3>
+                                                    <p>{{ item.sender }}</p>
+                                                </div>
+                                                <md-divider></md-divider>
+                                            </md-list-item>
+                                        </md-list>
+                                    </md-tab>
+
+                                </md-tabs>
+                            </md-content>
+                        </section>
+
+                        <section ng-show="!tab_state">
+                            <md-input-container md-no-float class="md-block">
+                                <span layout="row" style="padding-right: 30px">
+                                    <md-icon aria-label="Search" class="material-icons" style="padding-right: 30px">search</md-icon>
+                                    <input type="text" ng-model="search_text_chat" placeholder="Search">
+                                </span>
+                            </md-input-container>
+                        </section>
+
+                        <style>
+                            #submit_btn {
+                                margin: 0px; 
+                                min-width: 1%; 
+                                line-height: 0px; 
+                                min-height: auto;
+                            }
+                        </style>
+
+                        <section ng-show="tab_state">
+                            <form ng-submit="submit(form)" name="form">
+                                <md-input-container md-no-float class="md-block">
+                                    <span layout="row" style="padding: 0 30px 0 30px">
+                                        <md-button ng-disabled="form.$invalid" ng-click="submit(form)" id="submit_btn" aria-label="submit">
+                                            <md-icon type="submit" class="material-icons">send</md-icon>
+                                        </md-button>
+                                        <div style="min-width: 30px"></div>
+                                        <input ng-model="message.text" name="message.text" type="text" placeholder="Send" required>
+                                    </span>
+                                </md-input-container>
+                            </form>
+                        </section>
+
                     </md-card>
                 </md-grid-tile>
 
@@ -89,22 +155,18 @@
                                 <md-icon style="height: 100px; width: 100px" md-svg-src="{{img}}"></md-icon>
                             </div>
                             <div><h1>{{ temp }}</h1></div>
-                            <div><h2>{{ day }}</h2>{{ location }}</p></div>
+                            <div><h2>{{ day }}</h2><p>{{ location }}</p></div>
                         </div>
                     </md-card>
                 </md-grid-tile>
 
                 <md-grid-tile md-colspan-gt-sm="3" md-colspan="1" md-rowspan-gt-sm="2" md-rowspan="1">
                     <md-card layout-fill>
-
                         <md-toolbar layout="row" class="md-primary">
                             <div class="md-toolbar-tools">
                                 <span>Timetable</span>
                             </div>
                         </md-toolbar>
-<!--                         <md-card-header>
-                            <h2>Timetable</h2>
-                        </md-card-header> -->
                     </md-card>
                 </md-grid-tile>
 

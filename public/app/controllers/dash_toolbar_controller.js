@@ -9,6 +9,8 @@
 
 		function toolbar($scope, Data, Auth, toast, $firebaseObject, $timeout, $state) {
 
+			$scope.title = "MuHub";
+
 			// get user from currentUser uid
 			var uid = Auth.$getAuth().uid;
 			var user = $firebaseObject(Data.child('users').child(uid));
@@ -27,7 +29,7 @@
 					$state.go('login');
 					toast.display("You've been logged out")
 				}, function(error) {
-					toast.display("You've been logged out", error);
+					toast.display("Your log out was attempted", error);
 				});
 
 			};

@@ -19,7 +19,7 @@
       <div layout="column" layout-padding>
         <md-input-container>
           <label>Email Address</label>
-          <input type="email" ng-model="email"/>
+          <input type="email" ng-model="email" minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/"/>
         </md-input-container>
 
         <md-input-container>
