@@ -187,6 +187,9 @@
 									sender: $scope.current_user_name,
 									receiver: $scope.recipient,
 									message: message
+								}).then(function(ref) {
+									$scope.message_objs.push({message :message, sender: $scope.current_user_name});
+									// console.log($scope.message_objs);
 								})
 							});
 						});
@@ -203,7 +206,7 @@
 				$scope.submit = function(form) {
 					if ($scope.message.text) {
 
-						$scope.message_objs.push($scope.message.text);
+						// $scope.message_objs.push($scope.message.text);
 
 						sendMessage($scope.message.text);
 
@@ -222,13 +225,15 @@
 					Data.child('room_metadata').once('value', function(data) {
 
 						data.forEach(function(itemSnapshot) {
-							$scope.message_objs.push(itemSnapshot.val().message);
+							$scope.message_objs.push({message :itemSnapshot.val().message, sender: itemSnapshot.val().sender});
 						});
 
 					}).catch(function(error) {
 						console.error("Error:", error);
 					});	
 				});
+
+				console.log($scope.message_objs);
 
 				// Data.child('room_metadata').endAt().limitToLast(1).on('child_added', function(snapshot) {
 				// 	$scope.message_objs.push(snapshot.val().message);
