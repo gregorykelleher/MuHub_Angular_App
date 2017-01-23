@@ -9,7 +9,7 @@
 
 		function toolbar($scope, Data, Auth, toast, $firebaseObject, $timeout, $state) {
 
-			$scope.title = "MuHub";
+			$scope.title = "Maynooth Student Hub";
 
 			// get user from currentUser uid
 			var uid = Auth.$getAuth().uid;

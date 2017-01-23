@@ -8,6 +8,8 @@
 		self.weather = weather;
 		self.map = map;
 		self.messaging = messaging;
+		self.todo = todo;
+
 
 		/* Weather Display Function */
 
@@ -22,20 +24,20 @@
 
 				function getWeather(code) {
 					var img;
-					function isClear() {
-						return img = "/app/imgs/clear.svg";
+					function isClear() { 
+						return img = "/app/imgs/clear.svg"; 
 					}
-					function isClouds() {
-						return img = "/app/imgs/clouds.svg";
+					function isClouds() { 
+						return img = "/app/imgs/clouds.svg"; 
 					}
-					function isRain() {
-						return img = "/app/imgs/rain.svg";
+					function isRain() { 
+						return img = "/app/imgs/rain.svg"; 
 					}
-					function isSnow() {
-						return img = "/app/imgs/snow.svg";
+					function isSnow() { 
+						return img = "/app/imgs/snow.svg"; 
 					}
-					function isThunder() {
-						return img = "/app/imgs/thunderstorm.svg";
+					function isThunder() { 
+						return img = "/app/imgs/thunderstorm.svg"; 
 					}
 					var codes = {
 						// clear
@@ -54,6 +56,92 @@
 				}
 				$scope.img = getWeather($scope.weather);
 			});
+		};
+
+		/* Todo Function */
+
+		function todo($scope, $mdDialog, $firebaseArray, Data, Auth) {
+
+			// fab options
+			$scope.hidden = false;
+			$scope.isOpen = false;
+			$scope.hover = false;
+
+			$scope.binState = false;
+
+			$scope.current_user_id = Auth.$getAuth().uid;
+			$scope.todos = $firebaseArray(Data.child("todo_metadata"));
+
+			$scope.todo_list = [];
+			$scope.todo_selected = [];
+
+			$scope.toggle = function (item, list) {
+				var idx = list.indexOf(item);
+				if (idx > -1) {
+					list.splice(idx, 1);
+				}
+				else { 
+					list.push(item); 
+				}
+				if ($scope.todo_selected.length > 0) {
+					$scope.binState = true;
+				} else { 
+					$scope.binState = false; 
+				}
+			};
+
+			$scope.exists = function (item, list) {
+				return list.indexOf(item) > -1;
+			};
+
+			// Only display current user's todos
+			$scope.todos.$loaded()
+			.then(function(){
+				angular.forEach($scope.todos, function(todo, uid) {
+					uid = $scope.current_user_id;
+					if (todo.id == uid) {
+						$scope.todo_list.push(todo);
+					}
+				});
+			});
+
+			$scope.showPrompt = function(ev) {
+
+				var confirm = $mdDialog.prompt()
+				.title('Add a new item to your list')
+				.clickOutsideToClose(true)
+				.placeholder('New item')
+				.ariaLabel('item_name')
+				.targetEvent(ev)
+				.ok('Add')
+				.cancel('Cancel');
+
+				$mdDialog.show(confirm).then(function(result) {
+
+					$scope.todo = result;
+					console.log(result);
+
+					$scope.todos.$loaded()
+					.then(function() {
+						Data.child('todo_metadata').once('value', function(item) {
+							$scope.todos.$add({
+								todo: $scope.todo,
+								id: $scope.current_user_id,
+								timestamp: Date.now()
+							}).then(function(ref) {
+								// push latest message to todo_list for updated display
+								$scope.todo_list.push({todo: $scope.todo, id: $scope.current_user_name, timestamp: Date.now()});
+							})
+						}).catch(function(error) {
+							console.error("Error:", error);
+						});
+					});
+
+				}, function() {
+					$scope.todo = 'no input';
+				});
+
+			};
 		};
 
 		/* Map Display Function */
@@ -149,11 +237,12 @@
 
 				function sendMessage(message) {
 
-					// create room_metadata in firebase
+					// create room_metadata to hold messages in firebase
 					var room_metadata = $firebaseArray(Data.child("room_metadata"));
 
-					room_metadata.$loaded().then(function(){
-
+					room_metadata.$loaded()
+					.then(function(){
+						// get the current user's name for sender field
 						Data.child('users').child($scope.current_user_id).once('value', function(snap) {
 							$scope.current_user_name = snap.val().first_name + " " + snap.val().last_name;
 
@@ -163,7 +252,7 @@
 									receiver: $scope.recipient,
 									message: message
 								}).then(function(ref) {
-									// push latest message to message_objs
+									// push latest message to message_objs for updated display
 									$scope.message_objs.push({message :message, sender: $scope.current_user_name});
 								})
 							});
@@ -183,6 +272,7 @@
 
 						sendMessage($scope.message.text);
 
+						// refresh form input field
 						$scope.message.text = '';
 						form.$setPristine();
 						form.$setUntouched();
@@ -208,11 +298,12 @@
 								}
 							});
 
-						}).catch(function(error) {
-							console.error("Error:", error);
-						});	
+						});
 					});
-				});
+					
+				}).catch(function(error) {
+					console.error("Error:", error);
+				});	
 				
 				// dynamic user chat tab
 				if ($scope.tabs.length == 1) {
