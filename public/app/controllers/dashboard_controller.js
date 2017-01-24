@@ -10,7 +10,6 @@
 		self.messaging = messaging;
 		self.todo = todo;
 
-
 		/* Weather Display Function */
 
 		function weather($scope) {
@@ -119,7 +118,6 @@
 				$mdDialog.show(confirm).then(function(result) {
 
 					$scope.todo = result;
-					console.log(result);
 
 					$scope.todos.$loaded()
 					.then(function() {
@@ -142,6 +140,40 @@
 				});
 
 			};
+
+			$scope.deleteSelected = function() {
+
+				// difference
+				var difference = $($scope.todo_list).not($scope.todo_selected).get();
+
+				// intersection
+				var intersection = $($scope.todo_list).not($($scope.todo_list).not($scope.todo_selected)).get();
+
+				// delete by reset
+				$scope.todo_list = difference;
+
+				$scope.todos.$loaded()
+				.then(function() {
+					Data.child('todo_metadata').once('value', function(item) {
+						item.forEach(function(itemSnapshot) {
+							if (($scope.current_user_id == itemSnapshot.val().id)) {
+								for (var i = 0; i < intersection.length; i++) {
+									var key = itemSnapshot.getKey();
+									if(intersection[i].todo == itemSnapshot.val().todo || intersection[i].$id == key) {
+										Data.child('todo_metadata').child(key).remove();
+										// hide delete button if list empty
+										($scope.todo_list.length == 0) ? ($scope.binState = false) : (true);
+									}
+								}
+							}
+						})
+					}).catch(function(error) {
+						console.error("Error:", error);
+					});
+				});
+
+			}
+
 		};
 
 		/* Map Display Function */
