@@ -367,7 +367,6 @@
 					$scope.tabs.push({ title: $scope.recipient, content: $scope.message_objs, disabled: false});
 				}
 
-
 			};
 
 		}
