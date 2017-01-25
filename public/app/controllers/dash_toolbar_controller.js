@@ -9,7 +9,7 @@
 
 		function toolbar($scope, Data, Auth, toast, $firebaseObject, $timeout, $state) {
 
-			$scope.title = "MuHub";
+			$scope.title = "Maynooth Student Hub";
 
 			// get user from currentUser uid
 			var uid = Auth.$getAuth().uid;
@@ -19,7 +19,7 @@
 			Data.child('users').child(uid).once('value', function(snap) {
 				$timeout(function() {
 					var item = snap.val();
-					$scope.name = item.first_name + " " + item.last_name;
+					(item == null || undefined) ? ($scope.name = "Guest") : ($scope.name = item.first_name + " " + item.last_name);
 				});
 			});
 
@@ -31,10 +31,8 @@
 				}, function(error) {
 					toast.display("Your log out was attempted", error);
 				});
-
 			};
-
+			
 		};
 	}
-
 })();

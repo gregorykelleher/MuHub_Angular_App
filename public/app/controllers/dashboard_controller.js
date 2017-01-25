@@ -8,6 +8,7 @@
 		self.weather = weather;
 		self.map = map;
 		self.messaging = messaging;
+		self.todo = todo;
 
 		/* Weather Display Function */
 
@@ -15,63 +16,164 @@
 
 			$scope.day = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][(new Date()).getDay()];
 
-			$.getJSON("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20%3D%20561669%20and%20u%3D%27c%27&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys").then(function(wd) {
-				$scope.location = "Maynooth";
-				$scope.weather = (wd.query.results.channel.item.condition.code).toString();
-				$scope.temp = (wd.query.results.channel.item.condition.temp).toString().split('.')[0] + "°C";
+			$.getJSON("https://api.apixu.com/v1/current.json?key=c79b2673ab674949b21164927161312&q=Maynooth").then(function(wd) {
+				$scope.location = (wd.location.name);
+				$scope.weather = (wd.current.condition.code).toString();
+				$scope.temp = (wd.current.temp_c).toString().split('.')[0] + "°C";
 
-				switch ($scope.weather) {
-					case "10":
-					case "11":
-					case "12":
-					$scope.img = "/app/imgs/rain.svg";
-					break;
-					case "8":
-					case "9":
-					$scope.img = "/app/imgs/rain.svg";
-					break;
-					case "26":
-					case "27":
-					case "28":
-					case "29":
-					case "30":
-					case "20":
-					$scope.img = "/app/imgs/clouds.svg";
-					break;
-					case "31":
-					case "32":
-					case "33":
-					case "34":
-					case "36":
-					case "27":
-					$scope.img = "/app/imgs/clear.svg";
-					break;
-					case "5":
-					case "6":
-					case "7":
-					case "13":
-					case "14":
-					case "15":
-					case "16":
-					case "17":
-					case "41":
-					case "42":
-					case "43":
-					case "46":
-					$scope.img = "/app/imgs/snow.svg";
-					break;
-					case "3":
-					case "4":
-					case "37":
-					case "38":
-					case "39":
-					case "40":
-					$scope.img = "/app/imgs/thunderstorm.svg";
-					break;
-					default:
-					$scope.img = "/app/imgs/error.svg";
+				function getWeather(code) {
+					var img;
+					function isClear() { 
+						return img = "/app/imgs/clear.svg"; 
+					}
+					function isClouds() { 
+						return img = "/app/imgs/clouds.svg"; 
+					}
+					function isRain() { 
+						return img = "/app/imgs/rain.svg"; 
+					}
+					function isSnow() { 
+						return img = "/app/imgs/snow.svg"; 
+					}
+					function isThunder() { 
+						return img = "/app/imgs/thunderstorm.svg"; 
+					}
+					var codes = {
+						// clear
+						'1000': isClear,
+						// clouds
+						'1003': isClouds, '1006': isClouds, '1009': isClouds,
+						// rain
+						'1063': isRain, '1150': isRain, '1153': isRain, '1180': isRain, '1183': isRain, '1186': isRain, 
+						'1189': isRain, '1192': isRain, '1195': isRain, '1240': isRain, '1243': isRain, '1246': isRain, 
+						// snow
+						'1066': isSnow, '1069': isSnow, '1114': isSnow,
+						// thunderstorm
+						'1087': isThunder, '1276': isThunder
+					};
+					return codes[code]();
 				}
+				$scope.img = getWeather($scope.weather);
 			});
+		};
+
+		/* Todo Function */
+
+		function todo($scope, $mdDialog, $firebaseArray, Data, Auth) {
+
+			// fab options
+			$scope.hidden = false;
+			$scope.isOpen = false;
+			$scope.hover = false;
+
+			$scope.binState = false;
+
+			$scope.current_user_id = Auth.$getAuth().uid;
+			$scope.todos = $firebaseArray(Data.child("todo_metadata"));
+
+			$scope.todo_list = [];
+			$scope.todo_selected = [];
+
+			$scope.toggle = function (item, list) {
+				var idx = list.indexOf(item);
+				if (idx > -1) {
+					list.splice(idx, 1);
+				}
+				else { 
+					list.push(item); 
+				}
+				if ($scope.todo_selected.length > 0) {
+					$scope.binState = true;
+				} else { 
+					$scope.binState = false; 
+				}
+			};
+
+			$scope.exists = function (item, list) {
+				return list.indexOf(item) > -1;
+			};
+
+			// Only display current user's todos
+			$scope.todos.$loaded()
+			.then(function(){
+				angular.forEach($scope.todos, function(todo, uid) {
+					uid = $scope.current_user_id;
+					if (todo.id == uid) {
+						$scope.todo_list.push(todo);
+					}
+				});
+			});
+
+			$scope.showPrompt = function(ev) {
+
+				var confirm = $mdDialog.prompt()
+				.title('Add a new item to your list')
+				.clickOutsideToClose(true)
+				.placeholder('New item')
+				.ariaLabel('item_name')
+				.targetEvent(ev)
+				.ok('Add')
+				.cancel('Cancel');
+
+				$mdDialog.show(confirm).then(function(result) {
+
+					$scope.todo = result;
+
+					$scope.todos.$loaded()
+					.then(function() {
+						Data.child('todo_metadata').once('value', function(item) {
+							$scope.todos.$add({
+								todo: $scope.todo,
+								id: $scope.current_user_id,
+								timestamp: Date.now()
+							}).then(function(ref) {
+								// push latest message to todo_list for updated display
+								$scope.todo_list.push({todo: $scope.todo, id: $scope.current_user_name, timestamp: Date.now()});
+							})
+						}).catch(function(error) {
+							console.error("Error:", error);
+						});
+					});
+
+				}, function() {
+					$scope.todo = 'no input';
+				});
+
+			};
+
+			$scope.deleteSelected = function() {
+
+				// difference
+				var difference = $($scope.todo_list).not($scope.todo_selected).get();
+
+				// intersection
+				var intersection = $($scope.todo_list).not($($scope.todo_list).not($scope.todo_selected)).get();
+
+				// delete by reset
+				$scope.todo_list = difference;
+
+				$scope.todos.$loaded()
+				.then(function() {
+					Data.child('todo_metadata').once('value', function(item) {
+						item.forEach(function(itemSnapshot) {
+							if (($scope.current_user_id == itemSnapshot.val().id)) {
+								for (var i = 0; i < intersection.length; i++) {
+									var key = itemSnapshot.getKey();
+									if(intersection[i].todo == itemSnapshot.val().todo || intersection[i].$id == key) {
+										Data.child('todo_metadata').child(key).remove();
+										// hide delete button if list empty
+										($scope.todo_list.length == 0) ? ($scope.binState = false) : (true);
+									}
+								}
+							}
+						})
+					}).catch(function(error) {
+						console.error("Error:", error);
+					});
+				});
+
+			}
+
 		};
 
 		/* Map Display Function */
@@ -101,9 +203,16 @@
 
 		/* Messaging Display Function */
 
-		function messaging($scope, $firebaseArray, $firebaseObject, $timeout, Data, Auth) {
+		function messaging($scope, $firebaseArray, $firebaseObject, $timeout, $mdDialog, Data, Auth) {
 
 			$scope.current_user_id = Auth.$getAuth().uid;
+
+			$scope.guest = false;
+
+			Data.child('users').child($scope.current_user_id).once('value', function(item) {
+				// check whether guest or registered user
+				(item.val() == undefined || null) ? ($scope.guest = true) : ($scope.guest = false);
+			})
 
 			var room_list = $firebaseArray(Data.child('users'));
 			$scope.users = [];
@@ -130,7 +239,17 @@
 			// change tab state for ng-show in DOM
 			$scope.changeTabState = function(bool) { $scope.tab_state = bool; }
 
-			$scope.openMessaging = function(item) { 
+			$scope.guest_alert = function() {
+				$mdDialog.show(
+					$mdDialog.alert()
+					.clickOutsideToClose(true)
+					.title('Messaging Unavailable')
+					.textContent('Unfortunately, guest users can\'t message registered users')
+					.ok('Got it!')
+					);
+			}
+
+			$scope.openMessaging = function(item) {
 
 				//capture recipient when message tab opened
 				$scope.recipient = item.first_name + " " + item.last_name;
@@ -161,19 +280,22 @@
 							});
 						}
 					});
+
 				}).catch(function(error) {
 					console.error("Error:", error);
 				});	
 
 				function sendMessage(message) {
 
-					// create room_metadata in firebase
+					// create room_metadata to hold messages in firebase
 					var room_metadata = $firebaseArray(Data.child("room_metadata"));
 
-					room_metadata.$loaded().then(function(){
-
+					room_metadata.$loaded()
+					.then(function(){
+						// get the current user's name for sender field
 						Data.child('users').child($scope.current_user_id).once('value', function(snap) {
-							$scope.current_user_name = snap.val().first_name + " " + snap.val().last_name;
+							var item = snap.val();
+							$scope.current_user_name = item.first_name + " " + item.last_name;
 
 							Data.once('value', function() {
 								room_metadata.$add({
@@ -181,7 +303,7 @@
 									receiver: $scope.recipient,
 									message: message
 								}).then(function(ref) {
-									// push latest message to message_objs
+									// push latest message to message_objs for updated display
 									$scope.message_objs.push({message :message, sender: $scope.current_user_name});
 								})
 							});
@@ -201,6 +323,7 @@
 
 						sendMessage($scope.message.text);
 
+						// refresh form input field
 						$scope.message.text = '';
 						form.$setPristine();
 						form.$setUntouched();
@@ -213,6 +336,7 @@
 				messages.$loaded()
 				.then(function() {
 					Data.child('users').child($scope.current_user_id).once('value', function(item) {
+
 						$scope.current_user_name = item.val().first_name + " " + item.val().last_name;
 
 						// only display messages with current_user and recipient members
@@ -226,11 +350,12 @@
 								}
 							});
 
-						}).catch(function(error) {
-							console.error("Error:", error);
-						});	
+						});
 					});
-				});
+					
+				}).catch(function(error) {
+					console.error("Error:", error);
+				});	
 				
 				// dynamic user chat tab
 				if ($scope.tabs.length == 1) {
@@ -241,9 +366,10 @@
 					$scope.tabs.splice(1);
 					$scope.tabs.push({ title: $scope.recipient, content: $scope.message_objs, disabled: false});
 				}
+
 			};
 
 		}
 	}
-	
+
 })();
