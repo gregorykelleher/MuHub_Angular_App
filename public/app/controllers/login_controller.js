@@ -85,6 +85,18 @@
 				}
 			}
 
+			$scope.sign_in_anon = function() {
+				Auth.$signInAnonymously().then(function(firebaseUser) {
+
+					$state.go('home'); 
+					toast.display("You've been signed in as a guest");
+					$scope.firebaseUser = firebaseUser;
+
+				}).catch(function(error) {
+					toast.display(error.message);
+				});
+			}
+
 			$scope.sign_in = function() {
 				$scope.message = null;
 				$scope.error = null;

@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gregorykelleher/upstream.git"
+    "url": "git+https://github.com/gregorykelleher/MuHub_Angular_App.git"
   },
   "keywords": [
     "angular",
@@ -18,9 +18,9 @@
   "author": "Gregory Kelleher",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/gregorykelleher/upstream/issues"
+    "url": "https://github.com/gregorykelleher/MuHub_Angular_App.git/issues"
   },
-  "homepage": "https://github.com/gregorykelleher/upstream#readme",
+  "homepage": "https://github.com/gregorykelleher/MuHub_Angular_App.git#readme",
   "dependencies": {
     "angular": "^1.5.8",
     "angular-animate": "^1.5.8",

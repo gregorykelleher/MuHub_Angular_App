@@ -8,12 +8,17 @@
   }
 </style>
 
-<div layout="row" layout-align="center center" style="min-height: 600px">
+<div layout="row" layout-align="center center" style="min-height: 700px">
   <div layout="column" class="md-whiteframe-z3" style="min-width: 350px">
 
     <md-content layout-padding ng-controller="lg.login">
       <div class="md-icon-button" aria-label="Icon" style="text-align: center;">
         <md-icon style="height: 100px; width: 100px; padding-bottom: 20px" md-svg-src="/app/imgs/account_circle.svg" aria-label="account_circle"></md-icon>
+      </div>
+
+      <div style="text-align: center; width:350px; word-wrap: break-word; line-height: 200%">
+        <h3>Welcome to MuHub</h3>
+        <p>Login or register with a valid @mumail email address below or sign in as a guest <a style="text-decoration: underline; cursor: pointer;" ng-click="sign_in_anon()">here</a></p>
       </div>
 
       <div layout="column" layout-padding>

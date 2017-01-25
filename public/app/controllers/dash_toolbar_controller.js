@@ -19,7 +19,12 @@
 			Data.child('users').child(uid).once('value', function(snap) {
 				$timeout(function() {
 					var item = snap.val();
-					$scope.name = item.first_name + " " + item.last_name;
+					if (item == null || undefined) {
+						$scope.name = "Guest";
+					}
+					else {
+						$scope.name = item.first_name + " " + item.last_name;
+					}
 				});
 			});
 

@@ -81,7 +81,9 @@
                             </div>
                         </md-toolbar>
 
-                        <section flex layout="column">
+                        <!-- /* Messaging Display For Registered Users */ -->
+
+                        <section flex layout="column" ng-show="!guest">
                             <md-content flex class="md-padding" style="background-color:white">
                                 <md-tabs md-selected="selectedIndex" md-stretch-tabs="always" md-no-ink md-dynamic-height flex>
 
@@ -103,6 +105,27 @@
                                                 <div class="md-list-item-text">
                                                     <h3>{{ item.message }}</h3>
                                                     <p>{{ item.sender }}</p>
+                                                </div>
+                                                <md-divider></md-divider>
+                                            </md-list-item>
+                                        </md-list>
+                                    </md-tab>
+
+                                </md-tabs>
+                            </md-content>
+                        </section>
+                        
+                        <!-- /* Messaging Display For Guests */ -->
+
+                        <section flex layout="column" ng-show="guest">
+                            <md-content flex class="md-padding" style="background-color:white">
+                                <md-tabs md-stretch-tabs="always" md-no-ink md-dynamic-height flex>
+
+                                    <md-tab label="{{ contacts.title }}">
+                                        <md-list flex>
+                                            <md-list-item ng-repeat="item in users | filter: search_text_chat">
+                                                <div layout="column">
+                                                    <md-button ng-click="guest_alert()" class="md-primary">{{ item.first_name }} {{ item.last_name }}</md-button>
                                                 </div>
                                                 <md-divider></md-divider>
                                             </md-list-item>
@@ -185,28 +208,30 @@
                         </section>
 
                         <div class="lock-size" layout="row">
-                          <md-fab-speed-dial md-open="isOpen" ng-class="{ 'md-hover-full': hover }" ng-mouseenter="isOpen=true" ng-mouseleave="isOpen=false" class="md-scale md-fab-bottom-right" md-direction="left">
-                              <md-fab-trigger>
-                                  <md-button aria-label="menu" class="md-fab md-accent">
-                                      <md-icon type="menu" class="material-icons">menu</md-icon>
-                                  </md-button>
-                              </md-fab-trigger>
+                            <md-fab-speed-dial md-open="isOpen" ng-class="{ 'md-hover-full': hover }" ng-mouseenter="isOpen=true" ng-mouseleave="isOpen=false" class="md-scale md-fab-bottom-right" md-direction="left">
 
-                              <md-fab-actions>
-                                  <md-button aria-label="add" class="md-fab md-raised md-mini" ng-click="showPrompt()">
-                                      <md-icon type="add" class="material-icons">add</md-icon>
-                                  </md-button>
-                                  <md-button aria-label="delete" ng-show="binState" ng-click="deleteSelected()" class="md-fab md-raised md-mini">
-                                      <md-icon type="delete" class="material-icons">delete</md-icon>
-                                  </md-button>
-                              </md-fab-actions>
-                          </md-fab-speed-dial>
-                      </div>
+                                <md-fab-trigger>
+                                    <md-button aria-label="menu" class="md-fab md-accent">
+                                        <md-icon type="menu" class="material-icons">menu</md-icon>
+                                    </md-button>
+                                </md-fab-trigger>
 
-                  </md-card>
-              </md-grid-tile>
+                                <md-fab-actions>
+                                    <md-button aria-label="add" class="md-fab md-raised md-mini" ng-click="showPrompt()">
+                                        <md-icon type="add" class="material-icons">add</md-icon>
+                                    </md-button>
+                                    <md-button aria-label="delete" ng-show="binState" ng-click="deleteSelected()" class="md-fab md-raised md-mini">
+                                        <md-icon type="delete" class="material-icons">delete</md-icon>
+                                    </md-button>
+                                </md-fab-actions>
+                                
+                            </md-fab-speed-dial>
+                        </div>
 
-          </md-grid-list>
-      </md-content>
-  </md-tab>
+                    </md-card>
+                </md-grid-tile>
+
+            </md-grid-list>
+        </md-content>
+    </md-tab>
 </md-tabs>

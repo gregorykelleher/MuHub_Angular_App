@@ -203,9 +203,16 @@
 
 		/* Messaging Display Function */
 
-		function messaging($scope, $firebaseArray, $firebaseObject, $timeout, Data, Auth) {
+		function messaging($scope, $firebaseArray, $firebaseObject, $timeout, $mdDialog, Data, Auth) {
 
 			$scope.current_user_id = Auth.$getAuth().uid;
+
+			$scope.guest = false;
+
+			Data.child('users').child($scope.current_user_id).once('value', function(item) {
+				// check whether guest or registered user
+				(item.val() == undefined || null) ? ($scope.guest = true) : ($scope.guest = false);
+			})
 
 			var room_list = $firebaseArray(Data.child('users'));
 			$scope.users = [];
@@ -232,7 +239,17 @@
 			// change tab state for ng-show in DOM
 			$scope.changeTabState = function(bool) { $scope.tab_state = bool; }
 
-			$scope.openMessaging = function(item) { 
+			$scope.guest_alert = function() {
+				$mdDialog.show(
+					$mdDialog.alert()
+					.clickOutsideToClose(true)
+					.title('Messaging Unavailable')
+					.textContent('Unfortunately, guest users can\'t message registered users')
+					.ok('Got it!')
+					);
+			}
+
+			$scope.openMessaging = function(item) {
 
 				//capture recipient when message tab opened
 				$scope.recipient = item.first_name + " " + item.last_name;
@@ -263,6 +280,7 @@
 							});
 						}
 					});
+
 				}).catch(function(error) {
 					console.error("Error:", error);
 				});	
@@ -276,7 +294,8 @@
 					.then(function(){
 						// get the current user's name for sender field
 						Data.child('users').child($scope.current_user_id).once('value', function(snap) {
-							$scope.current_user_name = snap.val().first_name + " " + snap.val().last_name;
+							var item = snap.val();
+							$scope.current_user_name = item.first_name + " " + item.last_name;
 
 							Data.once('value', function() {
 								room_metadata.$add({
@@ -317,6 +336,7 @@
 				messages.$loaded()
 				.then(function() {
 					Data.child('users').child($scope.current_user_id).once('value', function(item) {
+
 						$scope.current_user_name = item.val().first_name + " " + item.val().last_name;
 
 						// only display messages with current_user and recipient members
@@ -346,9 +366,11 @@
 					$scope.tabs.splice(1);
 					$scope.tabs.push({ title: $scope.recipient, content: $scope.message_objs, disabled: false});
 				}
+
+
 			};
 
 		}
 	}
-	
+
 })();
