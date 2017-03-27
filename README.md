@@ -6,4 +6,4 @@ This repository contains the entire codebase for the application. Originally it 
 
 You can read more about the application on my blog [here](http://www.gregorykelleher.com/blog/angularjs_project).
 
-To view the functioning application online, you can view it [here](cs353-project.firebaseapp.com).
+To view the functioning application online, you can view it [here](https://cs353-project.firebaseapp.com/).
