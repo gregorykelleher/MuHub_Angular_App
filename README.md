@@ -1,3 +1,6 @@
+
+![](public/app/imgs/map.png)
+
 # Description
 
 MuHub is an online collaborative student web application designed specifically for those studying at Maynooth University, Ireland.
